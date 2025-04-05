@@ -8,18 +8,22 @@ import { cn } from "@/lib/utils";
 
 const ROICalculator = () => {
   // Fixed assumptions
-  const totalAnnualOrders = 500000000; // 500 Million
-  const currentWismoRate = 0.05; // 5%
+  const totalAnnualOrders = 2600000000; // 2.6 Billion
+  const currentWismoRate = 0.07; // 7.0%
 
   // Interactive inputs with updated default values
   const [wismoReduction, setWismoReduction] = useState(8); // Default 8%
-  const [developmentCost, setDevelopmentCost] = useState(750000); // Default $750,000
+  const [developmentCost, setDevelopmentCost] = useState(1500000); // Default $1,500,000
   const [costPerContact, setCostPerContact] = useState(7); // Default $7.00
 
   // Calculated outputs
   const [contactsReduced, setContactsReduced] = useState(0);
   const [annualSavings, setAnnualSavings] = useState(0);
   const [annualROI, setAnnualROI] = useState(0);
+  
+  // Implied values
+  const totalWismoContacts = totalAnnualOrders * currentWismoRate;
+  const totalWismoCost = totalWismoContacts * costPerContact;
 
   // Calculate results whenever inputs change
   useEffect(() => {
@@ -41,7 +45,9 @@ const ROICalculator = () => {
 
   // Format large numbers with commas and abbreviations
   const formatNumber = (num: number) => {
-    if (num >= 1000000) {
+    if (num >= 1000000000) {
+      return `${(num / 1000000000).toFixed(2)} Billion`;
+    } else if (num >= 1000000) {
       return `${(num / 1000000).toFixed(1)} Million`;
     } else if (num >= 1000) {
       return `${(num / 1000).toFixed(1)}k`;
@@ -51,7 +57,9 @@ const ROICalculator = () => {
 
   // Format currency
   const formatCurrency = (num: number) => {
-    if (num >= 1000000) {
+    if (num >= 1000000000) {
+      return `$${(num / 1000000000).toFixed(2)} Billion`;
+    } else if (num >= 1000000) {
       return `$${(num / 1000000).toFixed(1)} Million`;
     } else if (num >= 1000) {
       return `$${(num / 1000).toFixed(1)}k`;
@@ -87,11 +95,19 @@ const ROICalculator = () => {
               <ul className="space-y-3">
                 <li className="flex justify-between">
                   <span>Total Annual US DoorDash Orders (Est.):</span>
-                  <span className="font-bold">{formatNumber(totalAnnualOrders)}</span>
+                  <span className="font-bold">~2.6 Billion</span>
                 </li>
                 <li className="flex justify-between">
                   <span>Current Estimated WISMO Contact Rate:</span>
-                  <span className="font-bold">{(currentWismoRate * 100).toFixed(1)}%</span>
+                  <span className="font-bold">7.0%</span>
+                </li>
+                <li className="flex justify-between">
+                  <span>Implied Annual WISMO Contacts:</span>
+                  <span className="font-bold">~{formatNumber(totalWismoContacts)}</span>
+                </li>
+                <li className="flex justify-between">
+                  <span>Implied Annual WISMO Cost (@${costPerContact.toFixed(2)}/contact):</span>
+                  <span className="font-bold">~{formatCurrency(totalWismoCost)}</span>
                 </li>
               </ul>
             </CardContent>
@@ -101,9 +117,8 @@ const ROICalculator = () => {
           <Card className="shadow-sm">
             <CardContent className="p-6">
               <h2 className="text-xl font-semibold mb-4">Adjust Key Variables</h2>
-              <p className="text-sm text-gray-600 mb-6">Use the sliders below to explore potential impact:</p>
               
-              <div className="space-y-8">
+              <div className="space-y-6">
                 {/* WISMO Reduction Slider */}
                 <div className="space-y-3">
                   <div className="flex justify-between">
@@ -113,14 +128,14 @@ const ROICalculator = () => {
                   <Slider 
                     value={[wismoReduction]} 
                     min={0} 
-                    max={20} 
+                    max={15} 
                     step={1}
                     onValueChange={(value) => setWismoReduction(value[0])}
                     className="py-2"
                   />
                   <div className="flex justify-between text-xs text-gray-500">
                     <span>0%</span>
-                    <span>20%</span>
+                    <span>15%</span>
                   </div>
                 </div>
                 
@@ -128,19 +143,19 @@ const ROICalculator = () => {
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <label className="text-sm font-medium">Estimated V1 Development Cost (Illustrative)</label>
-                    <span className="font-bold text-doordash-blue">${(developmentCost/1000).toFixed(0)}k</span>
+                    <span className="font-bold text-doordash-blue">${(developmentCost/1000000).toFixed(1)}M</span>
                   </div>
                   <Slider 
                     value={[developmentCost]} 
-                    min={250000} 
-                    max={2000000} 
+                    min={750000} 
+                    max={3000000} 
                     step={50000}
                     onValueChange={(value) => setDevelopmentCost(value[0])}
                     className="py-2"
                   />
                   <div className="flex justify-between text-xs text-gray-500">
-                    <span>$250k</span>
-                    <span>$2M</span>
+                    <span>$750k</span>
+                    <span>$3M</span>
                   </div>
                 </div>
                 
@@ -152,14 +167,14 @@ const ROICalculator = () => {
                   </div>
                   <Slider 
                     value={[costPerContact]} 
-                    min={3} 
+                    min={4} 
                     max={12} 
                     step={0.5}
                     onValueChange={(value) => setCostPerContact(value[0])}
                     className="py-2"
                   />
                   <div className="flex justify-between text-xs text-gray-500">
-                    <span>$3.00</span>
+                    <span>$4.00</span>
                     <span>$12.00</span>
                   </div>
                 </div>
@@ -186,7 +201,7 @@ const ROICalculator = () => {
                 {/* Annual Support Cost Savings */}
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                   <h3 className="text-sm font-medium text-gray-600 mb-1">Estimated Annual Support Cost Savings:</h3>
-                  <div id="output-annual-saving" className="text-2xl font-bold text-doordash-blue">
+                  <div id="output-annual-saving" className="text-3xl font-bold text-doordash-blue">
                     ~{formatCurrency(annualSavings)}
                   </div>
                 </div>
@@ -204,7 +219,7 @@ const ROICalculator = () => {
               
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 mt-auto">
                 <p className="text-sm text-blue-800">
-                  <strong>Calculation:</strong> Est. Annual Saving = (Total Orders * Rate * Reduction %) * Cost per Contact. ROI % = (Annual Saving / Dev Cost) * 100.
+                  <strong>Calculation:</strong> Est. Annual Saving = (2.6B * 7% * Reduction %) * Cost per Contact. ROI % = (Annual Saving / Dev Cost) * 100.
                 </p>
               </div>
             </CardContent>
