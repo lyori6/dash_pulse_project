@@ -1,0 +1,149 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  /* DashPulse specific classes */
+  .progress-bar {
+    @apply flex items-center justify-between relative w-full;
+  }
+  
+  .progress-dot {
+    @apply w-5 h-5 rounded-full z-10 flex items-center justify-center relative;
+  }
+  
+  .progress-dot.active {
+    @apply bg-doordash-red;
+  }
+  
+  .progress-dot:not(.active) {
+    @apply bg-gray-200;
+  }
+  
+  .progress-line {
+    @apply h-1 flex-grow mx-2;
+  }
+  
+  .progress-line.active {
+    @apply bg-doordash-red;
+  }
+  
+  .progress-line:not(.active) {
+    @apply bg-gray-200;
+  }
+  
+  .dashpulse-indicator {
+    @apply inline-flex items-center text-xs text-doordash-blue gap-1 px-2 py-1 bg-doordash-light-blue rounded-xl mt-2;
+  }
+  
+  .dashpulse-pulse {
+    @apply w-1.5 h-1.5 rounded-full bg-doordash-blue animate-pulse;
+  }
+  
+  /* Smartphone mockup styling - updated */
+  .smartphone-mockup {
+    @apply w-[320px] h-[640px] relative;
+    perspective: 1000px;
+  }
+  
+  .smartphone-frame {
+    @apply w-full h-full bg-black rounded-[36px] overflow-hidden flex flex-col shadow-lg relative;
+  }
+  
+  .smartphone-notch {
+    @apply absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-7 bg-black rounded-b-2xl z-50;
+  }
+  
+  .smartphone-screen {
+    @apply flex-1 bg-white overflow-hidden;
+    height: calc(100% - 90px);
+  }
+  
+  .smartphone-home-button {
+    @apply w-[40%] h-1 bg-gray-300 rounded-full mx-auto my-4;
+  }
+  
+  .status-bar {
+    @apply h-11 bg-white flex justify-between items-center px-4 text-sm;
+    padding-top: 1.25rem;
+  }
+  
+  .update-banner {
+    @apply p-4 bg-doordash-light-orange border-l-4 border-doordash-orange mx-4 mb-4 rounded-lg;
+  }
+  
+  .update-banner.severe {
+    @apply bg-doordash-light-red border-l-4 border-doordash-red;
+  }
+  
+  .help-button {
+    @apply mt-3 bg-white border border-doordash-red text-doordash-red px-4 py-1 rounded-full text-sm font-medium inline-block;
+  }
+  
+  .screen-container {
+    @apply flex flex-col justify-center items-center;
+  }
+
+  /* Keyframe animations */
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  
+  @keyframes ping {
+    75%, 100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+}
