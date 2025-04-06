@@ -16,7 +16,7 @@ interface FlowSectionProps {
 const FlowSection: React.FC<FlowSectionProps> = ({ selectedPhone, onSelectPhone }) => {
   return (
     <section className="mt-16 mb-20">
-      <div className="mb-8">
+      <div className="mb-12">
         <h2 className="text-2xl md:text-3xl font-semibold mb-3">Main Flow</h2>
         <p className="text-gray-700">
           Experience the complete user journey of DashPulse from checkout to delivery completion. 

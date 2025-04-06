@@ -22,7 +22,7 @@ const Layout = () => {
   // Update active tab indicator position
   useEffect(() => {
     if (navRef.current) {
-      const activeTab = navRef.current.querySelector('.text-doordash-red');
+      const activeTab = navRef.current.querySelector('.active-tab');
       if (activeTab) {
         const { left, width } = activeTab.getBoundingClientRect();
         const navLeft = navRef.current.getBoundingClientRect().left;
@@ -36,49 +36,52 @@ const Layout = () => {
   
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <header className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 transition-transform hover:scale-105">
-            <DashPulseLogo />
-            <span className="text-[#E24536] text-xl font-bold">DashPulse</span>
-          </Link>
-        </div>
-        <div className="container mx-auto px-4 overflow-x-auto">
-          <nav className="flex space-x-4 min-w-max relative" ref={navRef}>
-            {/* Active tab indicator */}
-            <div 
-              className="absolute bottom-0 h-0.5 bg-doordash-red transition-all duration-300 ease-in-out"
-              style={{ 
-                left: activeTabPosition.left, 
-                width: activeTabPosition.width,
-                transform: 'translateY(1px)'
-              }}
-            />
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center gap-2 transition-transform hover:scale-105 mr-8">
+              <DashPulseLogo size="large" />
+              <span className="text-[#E24536] text-xl font-bold">DashPulse</span>
+            </Link>
             
-            <NavLink 
-              to="/" 
-              end
-              className={({ isActive }) => cn(
-                "px-4 py-2 text-gray-600 transition-all duration-300 border-b-2 whitespace-nowrap",
-                isActive ? "border-doordash-red text-doordash-red" : "border-transparent hover:text-doordash-red"
-              )}
-            >
-              Home
-            </NavLink>
-            <NavLink 
-              to="/deck" 
-              className={({ isActive }) => cn(
-                "px-4 py-2 text-gray-600 transition-all duration-300 border-b-2 whitespace-nowrap",
-                isActive ? "border-doordash-red text-doordash-red" : "border-transparent hover:text-doordash-red"
-              )}
-            >
-              Full Deck
-            </NavLink>
-          </nav>
+            <div className="relative" ref={navRef}>
+              {/* Active tab indicator */}
+              <div 
+                className="absolute bottom-0 h-1 bg-doordash-red transition-all duration-300 ease-in-out rounded-full"
+                style={{ 
+                  left: activeTabPosition.left, 
+                  width: activeTabPosition.width,
+                  transform: 'translateY(8px)'
+                }}
+              />
+              
+              <nav className="flex">
+                <NavLink 
+                  to="/" 
+                  end
+                  className={({ isActive }) => cn(
+                    "px-5 py-2 text-gray-600 transition-all duration-300 text-base font-medium rounded-full mx-1",
+                    isActive ? "active-tab text-doordash-red" : "hover:bg-gray-50"
+                  )}
+                >
+                  Home
+                </NavLink>
+                <NavLink 
+                  to="/deck" 
+                  className={({ isActive }) => cn(
+                    "px-5 py-2 text-gray-600 transition-all duration-300 text-base font-medium rounded-full mx-1",
+                    isActive ? "active-tab text-doordash-red" : "hover:bg-gray-50"
+                  )}
+                >
+                  Full Deck
+                </NavLink>
+              </nav>
+            </div>
+          </div>
         </div>
       </header>
       <main className={cn(
-        "container mx-auto flex-1 p-4 md:p-6 transition-opacity duration-300",
+        "container mx-auto flex-1 p-4 md:p-6 transition-opacity duration-300 scroll-smooth",
         pageTransition ? "opacity-95" : "opacity-100"
       )}>
         <Outlet />

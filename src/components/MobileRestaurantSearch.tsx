@@ -78,7 +78,17 @@ const MobileRestaurantSearch = () => {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="w-[320px] h-[600px] bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+      {/* Status bar */}
+      <div className="h-6 bg-white flex items-center justify-between px-4">
+        <span className="text-xs font-medium">7:30 PM</span>
+        <div className="flex items-center gap-1">
+          <span className="text-xs">📶</span>
+          <span className="text-xs">🔋</span>
+          <span className="text-xs">📍</span>
+        </div>
+      </div>
+      
       <div className="sticky top-0 z-10 bg-white">
         {/* Header */}
         <div className="p-4 border-b">
