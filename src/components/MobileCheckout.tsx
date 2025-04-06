@@ -35,17 +35,8 @@ const MobileCheckout = ({ onPlaceOrder }: MobileCheckoutProps) => {
   const total = subtotal + tax + deliveryFee + serviceFee + tip;
   
   return (
-    <div className="relative w-[320px] h-[580px] bg-white rounded-3xl overflow-hidden shadow-lg">
+    <div className="flex flex-col h-full">
       <div className="sticky top-0 z-10 bg-white">
-        {/* Status bar */}
-        <div className="h-6 bg-white flex items-center justify-between px-4">
-          <span className="text-xs font-medium">8:45 AM</span>
-          <div className="flex items-center gap-1">
-            <span className="text-xs">📶</span>
-            <span className="text-xs">🔋</span>
-          </div>
-        </div>
-        
         {/* Header */}
         <div className="flex items-center p-4 border-b">
           <ArrowLeft className="h-5 w-5 mr-3" />
@@ -53,7 +44,7 @@ const MobileCheckout = ({ onPlaceOrder }: MobileCheckoutProps) => {
         </div>
       </div>
       
-      <ScrollArea className="h-[502px]">
+      <ScrollArea className="flex-1">
         {loading ? (
           <div className="flex items-center justify-center h-[400px]">
             <div className="flex flex-col items-center">

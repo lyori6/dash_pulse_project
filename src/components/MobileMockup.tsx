@@ -148,7 +148,7 @@ const progressStyles = `
   }
   
   .smartphone-screen {
-    height: 580px;
+    height: 680px;
     overflow: hidden;
   }
   

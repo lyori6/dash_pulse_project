@@ -63,43 +63,7 @@ const Layout = () => {
                 isActive ? "border-doordash-red text-doordash-red" : "border-transparent hover:text-doordash-red"
               )}
             >
-              Home / Intro
-            </NavLink>
-            <NavLink 
-              to="/features" 
-              className={({ isActive }) => cn(
-                "px-4 py-2 text-gray-600 transition-all duration-300 border-b-2 whitespace-nowrap",
-                isActive ? "border-doordash-red text-doordash-red" : "border-transparent hover:text-doordash-red"
-              )}
-            >
-              Feature Integration
-            </NavLink>
-            <NavLink 
-              to="/flow" 
-              className={({ isActive }) => cn(
-                "px-4 py-2 text-gray-600 transition-all duration-300 border-b-2 whitespace-nowrap",
-                isActive ? "border-doordash-red text-doordash-red" : "border-transparent hover:text-doordash-red"
-              )}
-            >
-              Core Flow
-            </NavLink>
-            <NavLink 
-              to="/states" 
-              className={({ isActive }) => cn(
-                "px-4 py-2 text-gray-600 transition-all duration-300 border-b-2 whitespace-nowrap",
-                isActive ? "border-doordash-red text-doordash-red" : "border-transparent hover:text-doordash-red" 
-              )}
-            >
-              Other States
-            </NavLink>
-            <NavLink 
-              to="/calculator" 
-              className={({ isActive }) => cn(
-                "px-4 py-2 text-gray-600 transition-all duration-300 border-b-2 whitespace-nowrap",
-                isActive ? "border-doordash-red text-doordash-red" : "border-transparent hover:text-doordash-red"
-              )}
-            >
-              ROI Calculator
+              Home
             </NavLink>
             <NavLink 
               to="/deck" 

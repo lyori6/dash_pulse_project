@@ -78,17 +78,8 @@ const MobileRestaurantSearch = () => {
   };
 
   return (
-    <div className="relative w-[320px] h-[580px] bg-white rounded-3xl overflow-hidden shadow-lg">
+    <div className="flex flex-col h-full">
       <div className="sticky top-0 z-10 bg-white">
-        {/* Status bar */}
-        <div className="h-6 bg-white flex items-center justify-between px-4">
-          <span className="text-xs font-medium">8:42 AM</span>
-          <div className="flex items-center gap-1">
-            <span className="text-xs">📶</span>
-            <span className="text-xs">🔋</span>
-          </div>
-        </div>
-        
         {/* Header */}
         <div className="p-4 border-b">
           <h2 className="font-bold text-lg mb-4">Nearby Restaurants</h2>
@@ -106,7 +97,7 @@ const MobileRestaurantSearch = () => {
       </div>
       
       {/* Restaurant list */}
-      <ScrollArea className="h-[502px]">
+      <ScrollArea className="flex-1">
         {loading ? (
           <div className="flex items-center justify-center h-[400px]">
             <div className="flex flex-col items-center">
@@ -175,13 +166,6 @@ const MobileRestaurantSearch = () => {
           </div>
         )}
       </ScrollArea>
-
-      {/* Toast notification */}
-      {showToast && (
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg text-sm animate-fade-in-up z-50">
-          This is only a demo. Get your own lunch! 🍔
-        </div>
-      )}
     </div>
   );
 };
