@@ -73,7 +73,7 @@ const Layout = () => {
                     isActive ? "active-tab text-doordash-red" : "hover:bg-gray-50"
                   )}
                 >
-                  Full Deck
+                  Full Presentation
                 </NavLink>
               </nav>
             </div>

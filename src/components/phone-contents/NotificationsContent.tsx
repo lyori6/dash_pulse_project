@@ -125,7 +125,7 @@ const NotificationsContent: React.FC<NotificationsContentProps> = ({ onBackClick
             </div>
             <div className="px-3 pb-3">
               <div className="text-sm text-gray-700">
-                John: Are we still meeting for lunch tomorrow?
+                Dori: I think it's time to we hire Lyor as our PM
               </div>
             </div>
           </div>

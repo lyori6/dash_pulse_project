@@ -63,9 +63,10 @@ const HomePage = () => {
       if (flowSectionRef.current && parallelSectionRef.current) {
         const flowRect = flowSectionRef.current.getBoundingClientRect();
         const parallelRect = parallelSectionRef.current.getBoundingClientRect();
+        const headerOffset = 150; // Increased offset to trigger the change earlier
         
-        // If flow section is visible in the viewport
-        if (flowRect.top < window.innerHeight && flowRect.bottom > 0) {
+        // If flow section is visible in the viewport with additional offset
+        if (flowRect.top < window.innerHeight - headerOffset && flowRect.bottom > headerOffset) {
           if (activeSection !== 'flow') {
             setActiveSection('flow');
             // Optionally reset to first phone in flow section
@@ -75,7 +76,7 @@ const HomePage = () => {
           }
         } 
         // If parallel section is visible and flow section is not
-        else if (parallelRect.top < window.innerHeight && parallelRect.bottom > 0) {
+        else if (parallelRect.top < window.innerHeight - headerOffset && parallelRect.bottom > headerOffset) {
           if (activeSection !== 'parallel') {
             setActiveSection('parallel');
             // Optionally reset to first phone in parallel section

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { cn } from "@/lib/utils";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Clock, AlertCircle } from "lucide-react";
 
 interface PostDeliveryContentProps {
   onBackClick?: () => void;
@@ -45,6 +45,21 @@ const PostDeliveryContent: React.FC<PostDeliveryContentProps> = ({ onBackClick }
           <div className="text-center mb-6">
             <div className="text-base font-medium">Your order has been delivered!</div>
             <div className="text-sm text-gray-600">9:05 PM • Dasher: Michael S.</div>
+          </div>
+          
+          {/* DashPulse Activity Notification */}
+          <div className="mb-6 bg-blue-50 rounded-lg p-3 border border-blue-100">
+            <div className="flex items-start">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                <Clock className="h-4 w-4 text-blue-600" />
+              </div>
+              <div>
+                <div className="text-sm font-medium text-blue-800 mb-1">DashPulse Active</div>
+                <div className="text-xs text-blue-700">
+                  DashPulse identified a slight 10-minute delay in your order and proactively updated your delivery time.
+                </div>
+              </div>
+            </div>
           </div>
           
           <div className="py-4 border-t border-b border-gray-100">

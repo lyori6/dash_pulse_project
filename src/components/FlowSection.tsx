@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import PhoneFrame from './PhoneFrame';
 import CheckoutContent from './phone-contents/CheckoutContent';
@@ -14,8 +14,38 @@ interface FlowSectionProps {
 }
 
 const FlowSection: React.FC<FlowSectionProps> = ({ selectedPhone, onSelectPhone }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  
+  // Check if section is visible in viewport for animation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // When section is 20% visible, trigger animation
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.2, // 20% of the element is visible
+      }
+    );
+    
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+    
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+  
   return (
-    <section className="mt-16 mb-20">
+    <section ref={sectionRef} className="mt-16 mb-20">
       <div className="mb-12">
         <h2 className="text-2xl md:text-3xl font-semibold mb-3">Main Flow</h2>
         <p className="text-gray-700">
@@ -26,12 +56,13 @@ const FlowSection: React.FC<FlowSectionProps> = ({ selectedPhone, onSelectPhone 
       
       <div className="flex flex-wrap gap-16 justify-center">
         {/* Checkout Experience */}
-        <div className={cn(
-          "transition-all duration-300",
-          selectedPhone === 'checkout' 
-            ? 'opacity-100 scale-100' 
-            : 'opacity-70 scale-95 hover:opacity-90'
-        )}>
+        <div 
+          className={cn(
+            "transform transition-all duration-700 ease-out",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+          )}
+          style={{ transitionDelay: "100ms" }}
+        >
           <PhoneFrame
             title="Checkout Experience"
             description="Shows DashPulse enabled on the checkout page"
@@ -45,12 +76,13 @@ const FlowSection: React.FC<FlowSectionProps> = ({ selectedPhone, onSelectPhone 
         </div>
         
         {/* Order Confirmed */}
-        <div className={cn(
-          "transition-all duration-300",
-          selectedPhone === 'order-confirmed' 
-            ? 'opacity-100 scale-100' 
-            : 'opacity-70 scale-95 hover:opacity-90'
-        )}>
+        <div 
+          className={cn(
+            "transform transition-all duration-700 ease-out",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+          )}
+          style={{ transitionDelay: "200ms" }}
+        >
           <PhoneFrame
             title="Order Confirmed"
             description="The initial screen after placing an order"
@@ -64,12 +96,13 @@ const FlowSection: React.FC<FlowSectionProps> = ({ selectedPhone, onSelectPhone 
         </div>
         
         {/* Normal State */}
-        <div className={cn(
-          "transition-all duration-300",
-          selectedPhone === 'normal-state' 
-            ? 'opacity-100 scale-100' 
-            : 'opacity-70 scale-95 hover:opacity-90'
-        )}>
+        <div 
+          className={cn(
+            "transform transition-all duration-700 ease-out",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+          )}
+          style={{ transitionDelay: "300ms" }}
+        >
           <PhoneFrame
             title="Order Initiated"
             description="Standard delivery tracking with real-time updates"
@@ -83,12 +116,13 @@ const FlowSection: React.FC<FlowSectionProps> = ({ selectedPhone, onSelectPhone 
         </div>
         
         {/* Minor Delay */}
-        <div className={cn(
-          "transition-all duration-300",
-          selectedPhone === 'minor-delay' 
-            ? 'opacity-100 scale-100' 
-            : 'opacity-70 scale-95 hover:opacity-90'
-        )}>
+        <div 
+          className={cn(
+            "transform transition-all duration-700 ease-out",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+          )}
+          style={{ transitionDelay: "400ms" }}
+        >
           <PhoneFrame
             title="Minor Delay"
             description="Proactive notification of small delay"
@@ -102,12 +136,13 @@ const FlowSection: React.FC<FlowSectionProps> = ({ selectedPhone, onSelectPhone 
         </div>
         
         {/* Significant Delay */}
-        <div className={cn(
-          "transition-all duration-300",
-          selectedPhone === 'significant-delay' 
-            ? 'opacity-100 scale-100' 
-            : 'opacity-70 scale-95 hover:opacity-90'
-        )}>
+        <div 
+          className={cn(
+            "transform transition-all duration-700 ease-out",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+          )}
+          style={{ transitionDelay: "500ms" }}
+        >
           <PhoneFrame
             title="Significant Delay"
             description="Notification of substantial delay with explanation"
@@ -121,12 +156,13 @@ const FlowSection: React.FC<FlowSectionProps> = ({ selectedPhone, onSelectPhone 
         </div>
         
         {/* Post Delivery */}
-        <div className={cn(
-          "transition-all duration-300",
-          selectedPhone === 'post-delivery' 
-            ? 'opacity-100 scale-100' 
-            : 'opacity-70 scale-95 hover:opacity-90'
-        )}>
+        <div 
+          className={cn(
+            "transform transition-all duration-700 ease-out",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+          )}
+          style={{ transitionDelay: "600ms" }}
+        >
           <PhoneFrame
             title="Post Delivery"
             description="Order completion with ratings and feedback"

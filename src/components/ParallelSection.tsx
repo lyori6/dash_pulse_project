@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import PhoneFrame from './PhoneFrame';
 import DiscoveryContent from './phone-contents/DiscoveryContent';
@@ -13,11 +13,41 @@ interface ParallelSectionProps {
 }
 
 const ParallelSection: React.FC<ParallelSectionProps> = ({ selectedPhone, onSelectPhone }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  
+  // Check if section is visible in viewport for animation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // When section is 20% visible, trigger animation
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.2, // 20% of the element is visible
+      }
+    );
+    
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+    
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+  
   return (
-    <section className="mb-20">
-      <div className="mb-8">
+    <section ref={sectionRef} className="mt-16 mb-20">
+      <div className="mb-12">
         <h2 className="text-2xl md:text-3xl font-semibold mb-3">Additional Screens</h2>
-        <p className="text-gray-700 mb-10">
+        <p className="text-gray-700">
           These screens are alternative or supplementary views that aren't part of the main flow. 
           They showcase different features and future concepts.
         </p>
@@ -25,12 +55,13 @@ const ParallelSection: React.FC<ParallelSectionProps> = ({ selectedPhone, onSele
       
       <div className="flex flex-wrap gap-16 justify-center">
         {/* Discovery Content */}
-        <div className={cn(
-          "transition-all duration-300",
-          selectedPhone === 'discovery' 
-            ? 'opacity-100 scale-100' 
-            : 'opacity-70 scale-95 hover:opacity-90'
-        )}>
+        <div 
+          className={cn(
+            "transform transition-all duration-700 ease-out",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+          )}
+          style={{ transitionDelay: "100ms" }}
+        >
           <PhoneFrame
             title="Restaurant Discovery"
             description="Shows DashPulse-enabled restaurants during search"
@@ -44,12 +75,13 @@ const ParallelSection: React.FC<ParallelSectionProps> = ({ selectedPhone, onSele
         </div>
         
         {/* Help Button */}
-        <div className={cn(
-          "transition-all duration-300",
-          selectedPhone === 'help-button' 
-            ? 'opacity-100 scale-100' 
-            : 'opacity-70 scale-95 hover:opacity-90'
-        )}>
+        <div 
+          className={cn(
+            "transform transition-all duration-700 ease-out",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+          )}
+          style={{ transitionDelay: "200ms" }}
+        >
           <PhoneFrame
             title="A/B Test: Help Button"
             description="Variant showing support option for delayed orders"
@@ -63,12 +95,13 @@ const ParallelSection: React.FC<ParallelSectionProps> = ({ selectedPhone, onSele
         </div>
         
         {/* Update Log */}
-        <div className={cn(
-          "transition-all duration-300",
-          selectedPhone === 'update-log' 
-            ? 'opacity-100 scale-100' 
-            : 'opacity-70 scale-95 hover:opacity-90'
-        )}>
+        <div 
+          className={cn(
+            "transform transition-all duration-700 ease-out",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+          )}
+          style={{ transitionDelay: "300ms" }}
+        >
           <PhoneFrame
             title="Update Log"
             description="History of all delivery updates and notifications"
@@ -82,12 +115,13 @@ const ParallelSection: React.FC<ParallelSectionProps> = ({ selectedPhone, onSele
         </div>
         
         {/* V2 Concept */}
-        <div className={cn(
-          "transition-all duration-300",
-          selectedPhone === 'v2-concept' 
-            ? 'opacity-100 scale-100' 
-            : 'opacity-70 scale-95 hover:opacity-90'
-        )}>
+        <div 
+          className={cn(
+            "transform transition-all duration-700 ease-out",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+          )}
+          style={{ transitionDelay: "400ms" }}
+        >
           <PhoneFrame
             title="V2 Concept"
             description="Future concept showing proactive alternatives"
@@ -101,12 +135,13 @@ const ParallelSection: React.FC<ParallelSectionProps> = ({ selectedPhone, onSele
         </div>
         
         {/* Notifications */}
-        <div className={cn(
-          "transition-all duration-300",
-          selectedPhone === 'notifications' 
-            ? 'opacity-100 scale-100' 
-            : 'opacity-70 scale-95 hover:opacity-90'
-        )}>
+        <div 
+          className={cn(
+            "transform transition-all duration-700 ease-out",
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+          )}
+          style={{ transitionDelay: "500ms" }}
+        >
           <PhoneFrame
             title="Push Notifications"
             description="Native phone notifications"

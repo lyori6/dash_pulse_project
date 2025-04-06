@@ -218,8 +218,10 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({ activeSteps, nextStep 
 };
 
 interface UpdateBannerProps {
-  title: string;
+  title?: string;
   message: string;
+  time?: string;
+  type?: 'info' | 'warning' | 'error';
   severe?: boolean;
   helpButton?: boolean;
   onHelpClick?: () => void;
@@ -231,25 +233,61 @@ interface UpdateBannerProps {
 
 export const UpdateBanner: React.FC<UpdateBannerProps> = ({ 
   title, 
-  message, 
+  message,
+  time,
+  type = 'info',
   severe = false,
   helpButton = false,
   onHelpClick,
-  backgroundColor = "bg-blue-50",
-  borderColor = "border-blue-500",
-  textColorTitle = "text-blue-800",
-  textColorMessage = "text-blue-700"
+  backgroundColor,
+  borderColor,
+  textColorTitle,
+  textColorMessage
 }) => {
+  // Set default colors based on type
+  let bgColor = backgroundColor;
+  let bColor = borderColor;
+  let titleColor = textColorTitle;
+  let messageColor = textColorMessage;
+  
+  if (!backgroundColor || !borderColor || !textColorTitle || !textColorMessage) {
+    switch (type) {
+      case 'warning':
+        bgColor = bgColor || "bg-amber-50";
+        bColor = bColor || "border-amber-500";
+        titleColor = titleColor || "text-amber-800";
+        messageColor = messageColor || "text-amber-700";
+        break;
+      case 'error':
+        bgColor = bgColor || "bg-red-50";
+        bColor = bColor || "border-red-500";
+        titleColor = titleColor || "text-red-800";
+        messageColor = messageColor || "text-red-700";
+        break;
+      default: // info
+        bgColor = bgColor || "bg-blue-50";
+        bColor = bColor || "border-blue-500";
+        titleColor = titleColor || "text-blue-800";
+        messageColor = messageColor || "text-blue-700";
+    }
+  }
+  
   // If severe is true, override the colors
-  const bgColor = severe ? "bg-red-50" : backgroundColor;
-  const bColor = severe ? "border-red-500" : borderColor;
-  const titleColor = severe ? "text-red-800" : textColorTitle;
-  const messageColor = severe ? "text-red-700" : textColorMessage;
+  if (severe) {
+    bgColor = "bg-red-50";
+    bColor = "border-red-500";
+    titleColor = "text-red-800";
+    messageColor = "text-red-700";
+  }
 
   return (
     <div className={`mx-4 my-3 p-3 ${bgColor} border-l-4 ${bColor} rounded-r-md relative`}>
-      <div className={`font-medium ${titleColor} mb-1`}>{title}</div>
+      {title && <div className={`font-medium ${titleColor} mb-1`}>{title}</div>}
       <div className={`text-sm ${messageColor}`}>{message}</div>
+      
+      {time && (
+        <div className="text-xs text-gray-500 mt-1">{time}</div>
+      )}
       
       {helpButton && (
         <button 
