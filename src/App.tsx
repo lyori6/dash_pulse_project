@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import HomePage from "./pages/Home";
 import FullDeck from "./pages/FullDeck";
+import Research from "./pages/Research";
 import NotFound from "./pages/NotFound";
 
 // Create a client
@@ -23,6 +24,7 @@ const App = () => (
             <Route path="/" element={<Layout />}>
               <Route index element={<HomePage />} />
               <Route path="deck" element={<FullDeck />} />
+              <Route path="research" element={<Research />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

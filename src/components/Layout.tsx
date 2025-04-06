@@ -73,7 +73,16 @@ const Layout = () => {
                     isActive ? "active-tab text-doordash-red" : "hover:bg-gray-50"
                   )}
                 >
-                  Full Presentation
+                  Presentation
+                </NavLink>
+                <NavLink 
+                  to="/research" 
+                  className={({ isActive }) => cn(
+                    "px-5 py-2 text-gray-600 transition-all duration-300 text-base font-medium rounded-full mx-1",
+                    isActive ? "active-tab text-doordash-red" : "hover:bg-gray-50"
+                  )}
+                >
+                  Research
                 </NavLink>
               </nav>
             </div>
