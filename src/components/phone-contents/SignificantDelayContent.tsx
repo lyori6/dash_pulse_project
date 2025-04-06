@@ -53,19 +53,51 @@ const SignificantDelayContent: React.FC = () => {
           type="error"
         />
         
-        {/* Help options */}
+        {/* Order Summary */}
         <div className="p-4 border-t">
-          <h3 className="text-sm font-semibold mb-2">Need help with this order?</h3>
-          <div className="flex space-x-2">
-            <button className="flex-1 bg-gray-100 py-2 rounded-full text-sm font-medium">
-              Contact Support
-            </button>
-            <button 
-              className="flex-1 bg-doordash-red text-white py-2 rounded-full text-sm font-medium"
-              onClick={() => setShowCancellationModal(true)}
-            >
-              View Options
-            </button>
+          <div className="text-base font-semibold mb-3">Order Summary</div>
+          <div className="flex justify-between py-2 border-b border-gray-100 text-sm">
+            <div>1x Cheeseburger</div>
+            <div>$8.99</div>
+          </div>
+          <div className="flex justify-between py-2 border-b border-gray-100 text-sm">
+            <div>1x Fries (Large)</div>
+            <div>$3.99</div>
+          </div>
+          <div className="flex justify-between py-2 border-b border-gray-100 text-sm">
+            <div>1x Milkshake</div>
+            <div>$4.99</div>
+          </div>
+          <div className="flex justify-between py-3 font-medium">
+            <div>Subtotal</div>
+            <div>$17.97</div>
+          </div>
+        </div>
+        
+        {/* Dasher info */}
+        <div className="px-4 pb-6">
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-medium mb-2">Your Dasher</h3>
+            <div className="flex items-center">
+              <div className="w-10 h-10 bg-gray-200 rounded-full mr-3 flex items-center justify-center text-gray-500 font-bold">
+                JD
+              </div>
+              <div>
+                <div className="font-medium">John D.</div>
+                <div className="text-xs text-gray-500">4.9 ★ • 2,354 deliveries</div>
+              </div>
+            </div>
+            <div className="mt-3 flex space-x-2">
+              <button className="flex-1 bg-gray-100 py-2 rounded-full text-sm font-medium">
+                Call
+              </button>
+              <button 
+                className="flex-1 bg-doordash-red text-white py-2 rounded-full text-sm font-medium"
+                onClick={() => setShowCancellationModal(true)}
+              >
+                View Options
+              </button>
+            </div>
           </div>
         </div>
       </div>

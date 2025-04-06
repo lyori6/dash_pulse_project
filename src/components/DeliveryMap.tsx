@@ -24,6 +24,48 @@ const DeliveryMap = ({ className, showLoading = true }: DeliveryMapProps) => {
     }
   }, [showLoading]);
   
+  // Trigger loading animation when parent component is focused/selected
+  useEffect(() => {
+    // When the parent screen is selected, trigger the loading animation
+    const handleScreenSelection = () => {
+      const phoneFrame = document.querySelector('.selected-phone');
+      if (phoneFrame) {
+        setIsMapClicked(true);
+        setIsLoading(true);
+        
+        // Simulate loading for 1.5 seconds
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1500);
+      }
+    };
+    
+    // Call once to check if already selected
+    handleScreenSelection();
+    
+    // Set up a mutation observer to detect when the parent gets the 'selected-phone' class
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          const target = mutation.target as HTMLElement;
+          if (target.classList.contains('selected-phone')) {
+            handleScreenSelection();
+          }
+        }
+      });
+    });
+    
+    // Find the closest phone frame parent
+    const phoneFrame = document.querySelector('.phone-frame');
+    if (phoneFrame) {
+      observer.observe(phoneFrame, { attributes: true });
+    }
+    
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+  
   // Handle map click to show loading state
   const handleMapClick = () => {
     setIsMapClicked(true);
