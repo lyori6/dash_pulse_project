@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -109,6 +108,14 @@ export default {
           '0%': { opacity: '0.7' },
           '50%': { opacity: '1' },
           '100%': { opacity: '0.7' },
+        },
+        'fadeIn': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        'scaleIn': {
+          '0%': { transform: 'scale(0.95)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
         }
       },
       animation: {
@@ -118,6 +125,8 @@ export default {
         'fade-in': 'fade-in 0.3s ease-out',
         'slide-in': 'slide-in 0.3s ease-out',
         'progress-pulse': 'progress-pulse 2s infinite',
+        'fadeIn': 'fadeIn 0.2s ease-out',
+        'scaleIn': 'scaleIn 0.2s ease-out',
       },
       fontFamily: {
         'sans': ['Inter', 'Roboto', 'SF Pro Display', 'system-ui', 'sans-serif'],

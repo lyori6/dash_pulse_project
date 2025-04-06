@@ -138,7 +138,7 @@ const HelpButtonContent: React.FC<HelpButtonContentProps> = ({ onBackClick }) =>
               </div>
             </button>
             
-            <button className="w-full bg-white border border-gray-200 p-3 rounded-lg text-left flex items-center mb-3 hover:bg-gray-50 transition-colors">
+            <button className="w-full bg-white border border-gray-200 p-3 rounded-lg text-left flex items-center mb-4 hover:bg-gray-50 transition-colors">
               <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center mr-3">
                 <span className="text-amber-600 text-sm">📋</span>
               </div>
@@ -148,17 +148,12 @@ const HelpButtonContent: React.FC<HelpButtonContentProps> = ({ onBackClick }) =>
               </div>
             </button>
             
-            <div className="mt-2 text-center">
-              <div className="text-xs text-gray-500 mb-1">Fastest alternative delivery</div>
-              <div className="text-sm font-medium text-amber-600 mb-4">Available in 30 minutes</div>
-              
-              <button 
-                onClick={() => setShowModal(false)}
-                className="w-full bg-gray-100 py-2.5 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors"
-              >
-                I'll Keep Waiting
-              </button>
-            </div>
+            <button 
+              onClick={() => setShowModal(false)}
+              className="w-full bg-gray-100 py-2.5 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors"
+            >
+              I'll Keep Waiting
+            </button>
           </div>
         </div>
       )}
