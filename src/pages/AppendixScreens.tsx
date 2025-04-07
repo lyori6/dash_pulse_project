@@ -271,6 +271,24 @@ const PostDeliveryContent = () => {
       
       <div className="py-4 border-t border-b border-gray-100">
         <div className="text-base font-semibold text-center mb-3">How was your Dasher?</div>
+        
+        {/* Added Dasher info with Message option */}
+        <div className="flex items-center justify-between px-4 mb-3">
+          <div className="flex items-center">
+            <div className="w-10 h-10 bg-gray-200 rounded-full mr-3 flex items-center justify-center text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <div>
+              <div className="font-medium">John D.</div>
+              <div className="text-xs text-gray-500">Your Dasher</div>
+            </div>
+          </div>
+          <div className="text-gray-500 text-sm">Message</div>
+        </div>
+        
         <div className="flex justify-center gap-2">
           {[1, 2, 3, 4, 5].map((star) => (
             <button

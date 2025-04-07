@@ -87,54 +87,57 @@ const SignificantDelayContent: React.FC = () => {
                 <div className="text-xs text-gray-500">4.9 ★ • 2,354 deliveries</div>
               </div>
             </div>
-            <div className="mt-3 flex space-x-2">
-              <button className="flex-1 bg-gray-100 py-2 rounded-full text-sm font-medium">
+            <div className="flex mt-3 space-x-2">
+              <button className="flex-1 bg-gray-100 py-2 rounded-full text-sm font-medium flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
                 Call
               </button>
-              <button 
-                className="flex-1 bg-doordash-red text-white py-2 rounded-full text-sm font-medium"
-                onClick={() => setShowCancellationModal(true)}
-              >
-                View Options
+              <button className="flex-1 bg-gray-100 py-2 rounded-full text-sm font-medium flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                </svg>
+                Text
               </button>
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* Cancellation Policy Modal */}
-      {showCancellationModal && (
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-4 z-50 animate-fadeIn">
-          <div className="bg-white rounded-xl p-5 w-[85%] max-w-xs animate-scaleIn">
-            <div className="flex justify-between items-center mb-3">
-              <h3 className="text-lg font-semibold">Order Cancellation</h3>
-              <button 
-                onClick={() => setShowCancellationModal(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X size={18} />
-              </button>
-            </div>
-            
-            <p className="text-sm text-gray-700 mb-4">
-              Unfortunately, the restaurant has already started preparing your order, so we won't be able to issue a full refund if you cancel at this time.
-            </p>
-            
-            <div className="flex flex-col gap-3">
-              <button className="w-full bg-white border border-gray-200 py-2.5 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors">
-                View Our Full Cancellation Policy
-              </button>
+        
+        {/* Cancellation Policy Modal */}
+        {showCancellationModal && (
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-4 z-50 animate-fadeIn">
+            <div className="bg-white rounded-xl p-5 w-[85%] max-w-xs animate-scaleIn">
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="text-lg font-semibold">Order Cancellation</h3>
+                <button 
+                  onClick={() => setShowCancellationModal(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <X size={18} />
+                </button>
+              </div>
               
-              <button 
-                onClick={() => setShowCancellationModal(false)}
-                className="w-full bg-gray-100 py-2.5 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors"
-              >
-                Dismiss
-              </button>
+              <p className="text-sm text-gray-700 mb-4">
+                Unfortunately, the restaurant has already started preparing your order, so we won't be able to issue a full refund if you cancel at this time.
+              </p>
+              
+              <div className="flex flex-col gap-3">
+                <button className="w-full bg-white border border-gray-200 py-2.5 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors">
+                  View Our Full Cancellation Policy
+                </button>
+                
+                <button 
+                  onClick={() => setShowCancellationModal(false)}
+                  className="w-full bg-gray-100 py-2.5 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors"
+                >
+                  Dismiss
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
