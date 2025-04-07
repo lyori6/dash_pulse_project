@@ -54,7 +54,7 @@ const FlowSection: React.FC<FlowSectionProps> = ({ selectedPhone, onSelectPhone 
         </p>
       </div>
       
-      <div className="flex flex-wrap gap-16 justify-center">
+      <div className="grid grid-cols-1 sm:flex sm:flex-wrap gap-8 md:gap-16 justify-center">
         {/* Checkout Experience */}
         <div 
           className={cn(

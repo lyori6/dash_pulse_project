@@ -79,7 +79,7 @@ const PhoneFrame: React.FC<PhoneFrameProps> = ({
       {/* Simple frame with thin border */}
       <div
         className={cn(
-          "relative w-[320px] rounded-xl overflow-hidden transition-all duration-300",
+          "relative w-full max-w-[320px] rounded-xl overflow-hidden transition-all duration-300",
           isActive 
             ? "shadow-md ring-2 ring-doordash-red transform scale-[1.02] z-10" 
             : "shadow-sm border border-gray-200 hover:shadow-md hover:scale-[1.01]",
