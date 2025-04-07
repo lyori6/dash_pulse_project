@@ -272,7 +272,7 @@ const HomePage = () => {
       </div>
       
       {/* Content Container */}
-      <div className="bg-white max-w-6xl mx-auto px-4 py-6 rounded-lg shadow-md">
+      <div className="bg-white max-w-6xl mx-auto px-4 py-6 rounded-lg border border-gray-200">
         {/* Main Flow Section */}
         <div ref={flowSectionRef} className="scroll-mt-32">
           <FlowSection 

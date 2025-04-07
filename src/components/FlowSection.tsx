@@ -73,94 +73,75 @@ const FlowSection: React.FC<FlowSectionProps> = ({ selectedPhone, onSelectPhone 
       
       {/* Mobile View - Simple List */}
       {isMobile && (
-        <div className="space-y-8">
+        <div className="space-y-4">
+          {/* Mobile notification toast */}
+          <div className="bg-blue-50 text-blue-800 px-4 py-2 rounded-lg mb-2 text-sm flex items-center">
+            <span className="mr-2">💻</span> For the best experience, view this showcase on desktop
+          </div>
+          
           {/* Checkout Experience */}
-          <div 
-            className={cn(
-              "bg-white rounded-lg shadow-sm border border-gray-200 p-4",
-              selectedPhone === 'checkout' && "border-[#E24536] shadow-md"
-            )}
-            onClick={() => onSelectPhone('checkout')}
-          >
-            <h3 className="font-semibold mb-2">1. Checkout Experience</h3>
-            <p className="text-sm text-gray-600 mb-3">Shows DashPulse enabled on the checkout page</p>
-            <div className="aspect-[9/16] w-full bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-              <CheckoutContent onPlaceOrder={() => onSelectPhone('order-confirmed')} />
+          <div className="bg-white rounded-lg p-3">
+            <h3 className="font-semibold mb-1 text-base">1. Checkout Experience</h3>
+            <p className="text-xs text-gray-600 mb-2">Shows DashPulse enabled on the checkout page</p>
+            <div className="aspect-[9/19.5] w-full overflow-hidden">
+              <div className="transform scale-[0.9] origin-top h-full">
+                <CheckoutContent onPlaceOrder={() => onSelectPhone('order-confirmed')} />
+              </div>
             </div>
           </div>
           
           {/* Order Confirmed */}
-          <div 
-            className={cn(
-              "bg-white rounded-lg shadow-sm border border-gray-200 p-4",
-              selectedPhone === 'order-confirmed' && "border-[#E24536] shadow-md"
-            )}
-            onClick={() => onSelectPhone('order-confirmed')}
-          >
-            <h3 className="font-semibold mb-2">2. Order Confirmed</h3>
-            <p className="text-sm text-gray-600 mb-3">The initial screen after placing an order</p>
-            <div className="aspect-[9/16] w-full bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-              <OrderConfirmedContent />
+          <div className="bg-white rounded-lg p-3">
+            <h3 className="font-semibold mb-1 text-base">2. Order Confirmed</h3>
+            <p className="text-xs text-gray-600 mb-2">The initial screen after placing an order</p>
+            <div className="aspect-[9/19.5] w-full overflow-hidden">
+              <div className="transform scale-[0.9] origin-top h-full">
+                <OrderConfirmedContent />
+              </div>
             </div>
           </div>
           
           {/* Normal State */}
-          <div 
-            className={cn(
-              "bg-white rounded-lg shadow-sm border border-gray-200 p-4",
-              selectedPhone === 'normal-state' && "border-[#E24536] shadow-md"
-            )}
-            onClick={() => onSelectPhone('normal-state')}
-          >
-            <h3 className="font-semibold mb-2">3. Order Initiated</h3>
-            <p className="text-sm text-gray-600 mb-3">Standard delivery tracking with real-time updates</p>
-            <div className="aspect-[9/16] w-full bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-              <NormalStateContent />
+          <div className="bg-white rounded-lg p-3">
+            <h3 className="font-semibold mb-1 text-base">3. Order Initiated</h3>
+            <p className="text-xs text-gray-600 mb-2">Standard delivery tracking with real-time updates</p>
+            <div className="aspect-[9/19.5] w-full overflow-hidden">
+              <div className="transform scale-[0.9] origin-top h-full">
+                <NormalStateContent />
+              </div>
             </div>
           </div>
           
           {/* Minor Delay */}
-          <div 
-            className={cn(
-              "bg-white rounded-lg shadow-sm border border-gray-200 p-4",
-              selectedPhone === 'minor-delay' && "border-[#E24536] shadow-md"
-            )}
-            onClick={() => onSelectPhone('minor-delay')}
-          >
-            <h3 className="font-semibold mb-2">4. Minor Delay</h3>
-            <p className="text-sm text-gray-600 mb-3">Proactive notification of small delay</p>
-            <div className="aspect-[9/16] w-full bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-              <MinorDelayContent />
+          <div className="bg-white rounded-lg p-3">
+            <h3 className="font-semibold mb-1 text-base">4. Minor Delay</h3>
+            <p className="text-xs text-gray-600 mb-2">Proactive notification of small delay</p>
+            <div className="aspect-[9/19.5] w-full overflow-hidden">
+              <div className="transform scale-[0.9] origin-top h-full">
+                <MinorDelayContent />
+              </div>
             </div>
           </div>
           
           {/* Significant Delay */}
-          <div 
-            className={cn(
-              "bg-white rounded-lg shadow-sm border border-gray-200 p-4",
-              selectedPhone === 'significant-delay' && "border-[#E24536] shadow-md"
-            )}
-            onClick={() => onSelectPhone('significant-delay')}
-          >
-            <h3 className="font-semibold mb-2">5. Significant Delay</h3>
-            <p className="text-sm text-gray-600 mb-3">Notification of substantial delay with explanation</p>
-            <div className="aspect-[9/16] w-full bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-              <SignificantDelayContent />
+          <div className="bg-white rounded-lg p-3">
+            <h3 className="font-semibold mb-1 text-base">5. Significant Delay</h3>
+            <p className="text-xs text-gray-600 mb-2">Notification of substantial delay with explanation</p>
+            <div className="aspect-[9/19.5] w-full overflow-hidden">
+              <div className="transform scale-[0.9] origin-top h-full">
+                <SignificantDelayContent />
+              </div>
             </div>
           </div>
           
           {/* Post Delivery */}
-          <div 
-            className={cn(
-              "bg-white rounded-lg shadow-sm border border-gray-200 p-4",
-              selectedPhone === 'post-delivery' && "border-[#E24536] shadow-md"
-            )}
-            onClick={() => onSelectPhone('post-delivery')}
-          >
-            <h3 className="font-semibold mb-2">6. Post Delivery</h3>
-            <p className="text-sm text-gray-600 mb-3">Order completion with ratings and feedback</p>
-            <div className="aspect-[9/16] w-full bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-              <PostDeliveryContent onBackClick={() => onSelectPhone('discovery')} />
+          <div className="bg-white rounded-lg p-3">
+            <h3 className="font-semibold mb-1 text-base">6. Post Delivery</h3>
+            <p className="text-xs text-gray-600 mb-2">Order completion with ratings and feedback</p>
+            <div className="aspect-[9/19.5] w-full overflow-hidden">
+              <div className="transform scale-[0.9] origin-top h-full">
+                <PostDeliveryContent onBackClick={() => onSelectPhone('discovery')} />
+              </div>
             </div>
           </div>
         </div>
