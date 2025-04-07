@@ -37,9 +37,9 @@ const MobileMockup: React.FC<MobileMockupProps> = ({
   onHelpClick
 }) => {
   return (
-    <div className="relative w-full max-w-[375px] mx-auto">
+    <div className="relative w-full max-w-[300px] mx-auto scale-[0.85] sm:scale-100 transform-gpu origin-top">
       {/* Phone Frame */}
-      <div className="relative border-[14px] border-black rounded-[40px] overflow-hidden shadow-xl bg-white">
+      <div className="relative border-[10px] sm:border-[14px] border-black rounded-[30px] sm:rounded-[40px] overflow-hidden shadow-xl bg-white">
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-6 bg-black rounded-b-xl z-10"></div>
         
         {/* Status Bar */}
@@ -84,7 +84,7 @@ const MobileMockup: React.FC<MobileMockupProps> = ({
         </div>
         
         {/* Content Area */}
-        <div className="h-[600px] overflow-y-auto bg-gray-50">
+        <div className="h-[500px] sm:h-[600px] overflow-y-auto bg-gray-50">
           {/* Update Banner */}
           {updateBanner && (
             <div className={cn(
