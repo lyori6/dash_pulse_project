@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import MobileMockup from "@/components/MobileMockup";
 import { cn } from "@/lib/utils";
@@ -8,6 +8,12 @@ type FlowState = 'normal' | 'minor-delay' | 'significant-delay' | 'help-button';
 const DashPulseFlow = () => {
   const [activeState, setActiveState] = useState<FlowState>('normal');
   const [showHelpModal, setShowHelpModal] = useState(false);
+  
+  // Initialize the component with the normal state selected
+  useEffect(() => {
+    // Ensure normal state is selected by default
+    setActiveState('normal');
+  }, []);
   
   const stateDescriptions = {
     'normal': 'Standard delivery tracking experience with real-time updates and estimated delivery time.',
@@ -23,10 +29,10 @@ const DashPulseFlow = () => {
         This section demonstrates the core DashPulse V1 flow across different scenarios. Use the buttons below to switch between states.
       </p>
       
-      <div className="flex flex-wrap gap-4 mb-8 justify-center">
+      <div className="flex flex-wrap gap-2 sm:gap-4 mb-8 justify-center">
         <button 
           className={cn(
-            "px-4 py-2 rounded-full transition-all",
+            "px-3 sm:px-4 py-2 rounded-full transition-all text-sm sm:text-base",
             activeState === 'normal' 
               ? "bg-doordash-blue text-white shadow-md" 
               : "bg-white text-gray-700 border border-gray-300 hover:border-doordash-blue"
@@ -37,7 +43,7 @@ const DashPulseFlow = () => {
         </button>
         <button 
           className={cn(
-            "px-4 py-2 rounded-full transition-all",
+            "px-3 sm:px-4 py-2 rounded-full transition-all text-sm sm:text-base",
             activeState === 'minor-delay' 
               ? "bg-doordash-blue text-white shadow-md" 
               : "bg-white text-gray-700 border border-gray-300 hover:border-doordash-blue"
@@ -48,7 +54,7 @@ const DashPulseFlow = () => {
         </button>
         <button 
           className={cn(
-            "px-4 py-2 rounded-full transition-all",
+            "px-3 sm:px-4 py-2 rounded-full transition-all text-sm sm:text-base",
             activeState === 'significant-delay' 
               ? "bg-doordash-blue text-white shadow-md" 
               : "bg-white text-gray-700 border border-gray-300 hover:border-doordash-blue"
@@ -59,7 +65,7 @@ const DashPulseFlow = () => {
         </button>
         <button 
           className={cn(
-            "px-4 py-2 rounded-full transition-all",
+            "px-3 sm:px-4 py-2 rounded-full transition-all text-sm sm:text-base",
             activeState === 'help-button' 
               ? "bg-doordash-blue text-white shadow-md" 
               : "bg-white text-gray-700 border border-gray-300 hover:border-doordash-blue"
@@ -71,8 +77,8 @@ const DashPulseFlow = () => {
       </div>
       
       <Card className="bg-white shadow-md overflow-hidden">
-        <CardContent className="p-6 md:p-10">
-          <div className="screen-container">
+        <CardContent className="p-4 sm:p-6 md:p-10">
+          <div className="screen-container flex justify-center">
             {/* Normal State */}
             {activeState === 'normal' && (
               <MobileMockup

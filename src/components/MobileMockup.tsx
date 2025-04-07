@@ -1,319 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { cn } from '@/lib/utils';
-import MapPlaceholder from '@/components/MapPlaceholder';
+import { Phone, MapPin, Clock, ChevronRight, Info, MessageSquare, Phone as PhoneIcon } from 'lucide-react';
+import NormalStateContent from './phone-contents/NormalStateContent';
+import MinorDelayContent from './phone-contents/MinorDelayContent';
+import SignificantDelayContent from './phone-contents/SignificantDelayContent';
+import HelpButtonContent from './phone-contents/HelpButtonContent';
 
-// Simplified progress styles with minimal animations
-const progressStyles = `
-  .progress-dot {
-    position: relative;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background-color: #e2e8f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    box-shadow: 0 0 0 4px rgba(226, 232, 240, 0.3);
-  }
-  
-  .progress-dot.active {
-    background-color: #E24536;
-    box-shadow: 0 0 0 4px rgba(226, 69, 54, 0.2);
-  }
-  
-  .progress-line {
-    position: absolute;
-    height: 3px;
-    background-color: #e2e8f0;
-    top: 8px;
-    left: 0;
-    right: 0;
-    z-index: 5;
-  }
-  
-  .progress-line.active {
-    background-color: #E24536;
-  }
-  
-  .dashpulse-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-size: 12px;
-    color: #0066FF;
-    font-weight: 500;
-    margin-top: 4px;
-  }
-  
-  .dashpulse-pulse {
-    width: 8px;
-    height: 8px;
-    background-color: #0066FF;
-    border-radius: 50%;
-  }
-  
-  .smartphone-mockup {
-    width: 320px;
-    position: relative;
-  }
-  
-  .smartphone-frame {
-    background: white;
-    border-radius: 36px;
-    overflow: hidden;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f1f1f1;
-    position: relative;
-  }
-  
-  .smartphone-notch {
-    position: absolute;
-    width: 150px;
-    height: 24px;
-    background: #000;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 0;
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-    z-index: 20;
-  }
-  
-  .status-bar {
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    background: white;
-    position: relative;
-    z-index: 10;
-    font-size: 14px;
-  }
-  
-  .smartphone-screen {
-    height: 680px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .smartphone-home-button {
-    width: 120px;
-    height: 4px;
-    background: #e0e0e0;
-    border-radius: 4px;
-    margin: 8px auto;
-  }
-  
-  .update-banner {
-    background-color: #f0f9ff;
-    border-left: 4px solid #0ea5e9;
-    padding: 12px 16px;
-    margin: 12px 16px;
-    border-radius: 6px;
-    position: relative;
-  }
-  
-  .update-banner.severe {
-    background-color: #fff1f2;
-    border-left-color: #e11d48;
-  }
-  
-  .help-button {
-    position: absolute;
-    right: 12px;
-    bottom: 12px;
-    font-size: 12px;
-    color: #0ea5e9;
-    font-weight: 500;
-  }
-`;
-
-interface ProgressDotProps {
-  active: boolean;
-  label: string;
-  isNext?: boolean;
-}
-
-const ProgressDot: React.FC<ProgressDotProps> = ({ active, label, isNext = false }) => {
-  return (
-    <div className="flex flex-col items-center">
-      <div className={cn(
-        "progress-dot",
-        active && "active",
-        isNext && "next"
-      )}>
-        {active && (
-          <div className="w-2 h-2 bg-white rounded-full"></div>
-        )}
-      </div>
-      <div className="text-xs mt-1 text-gray-600">{label}</div>
-    </div>
-  );
-};
-
-interface ProgressBarProps {
-  activeSteps: number;
-  nextStep?: number;
-}
-
-const ProgressBar: React.FC<ProgressBarProps> = ({ activeSteps, nextStep = -1 }) => {
-  return (
-    <div className="px-4 py-6 relative">
-      <style dangerouslySetInnerHTML={{ __html: progressStyles }} />
-      
-      {/* Progress Lines */}
-      <div className="flex justify-between relative">
-        <div className={cn("progress-line", activeSteps >= 1 && "active")} style={{ left: '16px', right: '50%' }}></div>
-        <div className={cn("progress-line", activeSteps >= 2 && "active")} style={{ left: '50%', right: '16px' }}></div>
-      </div>
-      
-      {/* Progress Dots */}
-      <div className="flex justify-between">
-        <ProgressDot active={activeSteps >= 0} label="Ordered" />
-        <ProgressDot active={activeSteps >= 1} label="Preparing" isNext={nextStep === 1} />
-        <ProgressDot active={activeSteps >= 2} label="Delivering" isNext={nextStep === 2} />
-        <ProgressDot active={activeSteps >= 3} label="Delivered" isNext={nextStep === 3} />
-      </div>
-      
-      {/* DashPulse Indicator */}
-      {activeSteps >= 0 && (
-        <div className="dashpulse-indicator">
-          <div className="dashpulse-pulse"></div>
-          <span>DashPulse Active</span>
-        </div>
-      )}
-    </div>
-  );
-};
-
-interface UpdateBannerProps {
+interface UpdateBanner {
   title: string;
   message: string;
   severe?: boolean;
   helpButton?: boolean;
-  onHelpClick?: () => void;
 }
-
-const UpdateBanner: React.FC<UpdateBannerProps> = ({ 
-  title, 
-  message, 
-  severe = false,
-  helpButton = false,
-  onHelpClick
-}) => {
-  return (
-    <div className={cn("update-banner", severe && "severe")}>
-      <div className="font-medium mb-1">{title}</div>
-      <div className="text-sm">{message}</div>
-      
-      {helpButton && (
-        <button 
-          className="help-button"
-          onClick={onHelpClick}
-        >
-          Get Help
-        </button>
-      )}
-    </div>
-  );
-};
-
-interface ETADisplayProps {
-  time: string;
-  calculating?: boolean;
-  isPostOrder?: boolean;
-  showETA?: boolean;
-}
-
-const ETADisplay: React.FC<ETADisplayProps> = ({ time, calculating = false, isPostOrder = true, showETA = true }) => {
-  if (!showETA) return null;
-  
-  return (
-    <div className="px-4 py-4 bg-white border-b border-gray-100">
-      {isPostOrder ? (
-        <>
-          <div className="text-sm text-gray-600">Estimated Delivery</div>
-          <div className="text-xl font-semibold">{calculating ? 'Calculating...' : time}</div>
-        </>
-      ) : (
-        <>
-          <div className="text-sm text-gray-600">Estimated Time</div>
-          <div className="text-xl font-semibold">{time}</div>
-        </>
-      )}
-    </div>
-  );
-};
-
-interface StarRatingProps {
-  initialRating?: number;
-}
-
-const StarRating: React.FC<StarRatingProps> = ({ initialRating = 0 }) => {
-  const [rating, setRating] = useState(initialRating);
-  const [hover, setHover] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
-  
-  const handleRatingClick = (selectedRating: number) => {
-    setRating(selectedRating);
-  };
-  
-  const handleSubmit = () => {
-    setSubmitted(true);
-  };
-  
-  return (
-    <div className="bg-white p-4 rounded-lg">
-      {submitted ? (
-        <div className="text-center py-4">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-2xl text-green-600 mx-auto mb-4">
-            ✓
-          </div>
-          <div className="text-lg font-semibold mb-1">Thanks for your feedback!</div>
-          <div className="text-sm text-gray-600">Your rating helps us improve.</div>
-        </div>
-      ) : (
-        <>
-          <div className="text-lg font-semibold mb-4 text-center">How was your delivery?</div>
-          
-          <div className="flex justify-center gap-2 mb-6">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                className="focus:outline-none"
-                onMouseEnter={() => setHover(star)}
-                onMouseLeave={() => setHover(0)}
-                onClick={() => handleRatingClick(star)}
-              >
-                <svg 
-                  width="40" 
-                  height="40" 
-                  viewBox="0 0 24 24" 
-                  fill={star <= (hover || rating) ? "#FFD700" : "none"} 
-                  stroke={star <= (hover || rating) ? "#FFD700" : "#D1D5DB"}
-                  strokeWidth="2"
-                >
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                </svg>
-              </button>
-            ))}
-          </div>
-          
-          <button 
-            className="w-full bg-doordash-blue text-white text-center py-3 rounded-lg font-medium"
-            onClick={handleSubmit}
-            disabled={rating === 0}
-          >
-            Submit Rating
-          </button>
-        </>
-      )}
-    </div>
-  );
-};
 
 interface MobileMockupProps {
   children?: React.ReactNode;
@@ -321,192 +19,261 @@ interface MobileMockupProps {
   title?: string;
   description?: string;
   activeSteps?: number;
+  updateBanner?: UpdateBanner;
   eta?: string;
-  calculating?: boolean;
-  buttonText?: string;
-  updateBanner?: {
-    title: string;
-    message: string;
-    severe?: boolean;
-    helpButton?: boolean;
-  };
-  overlay?: React.ReactNode;
   isPostOrder?: boolean;
-  showETA?: boolean;
-  showRating?: boolean;
   onHelpClick?: () => void;
-  showBackButton?: boolean;
-  onBackClick?: () => void;
 }
 
 const MobileMockup: React.FC<MobileMockupProps> = ({ 
-  children,
-  time = "8:30 PM",
+  children, 
+  time = "9:41", 
   title = "Order Details",
   description,
-  activeSteps = 0,
-  eta = "8:30 PM - 8:40 PM",
-  calculating = false,
-  buttonText = "Live Tracking",
+  activeSteps = 2,
   updateBanner,
-  overlay,
-  isPostOrder = true,
-  showETA = true,
-  showRating = false,
-  onHelpClick,
-  showBackButton = false,
-  onBackClick
+  eta = "10:15 PM - 10:25 PM",
+  isPostOrder = false,
+  onHelpClick
 }) => {
-  const [showMap, setShowMap] = useState(false);
-  
-  const handleTrackClick = () => {
-    setShowMap(true);
-  };
-  
-  const handleCloseMap = () => {
-    setShowMap(false);
-  };
-  
   return (
-    <div className="relative">
-      {description && (
-        <div className="mb-4 text-center">
-          <h3 className="text-lg font-semibold text-gray-700">{title}</h3>
-          {description && <p className="text-sm text-gray-500">{description}</p>}
+    <div className="relative w-full max-w-[375px] mx-auto">
+      {/* Phone Frame */}
+      <div className="relative border-[14px] border-black rounded-[40px] overflow-hidden shadow-xl bg-white">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-6 bg-black rounded-b-xl z-10"></div>
+        
+        {/* Status Bar */}
+        <div className="bg-white px-4 py-2 flex justify-between items-center">
+          <div className="text-xs font-semibold">{time}</div>
+          <div className="flex items-center space-x-1">
+            <div className="w-4 h-4">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="black"/>
+              </svg>
+            </div>
+            <div className="w-4 h-4">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="black"/>
+              </svg>
+            </div>
+            <div className="w-4 h-4">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="black"/>
+              </svg>
+            </div>
+          </div>
         </div>
-      )}
-      
-      <div className="smartphone-mockup mx-auto">
-        {/* Phone Frame without white border */}
-        <div className="smartphone-frame">
-          <div className="smartphone-notch"></div>
-          
-          {/* Status Bar */}
-          <div className="status-bar">
-            <div>{time}</div>
-            <div className="flex items-center gap-1">
-              <span>📶</span>
-              <span>🔋</span>
+        
+        {/* App Header */}
+        <div className="bg-white px-4 py-3 border-b border-gray-200">
+          <div className="flex items-center">
+            <div className="mr-auto">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 18L9 12L15 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <div className="text-base font-semibold">{title}</div>
+            <div className="ml-auto">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </div>
           </div>
-          
-          {/* Header */}
-          <div className="flex items-center px-4 py-3 border-b border-gray-100 bg-white">
-            {showBackButton && (
-              <button 
-                onClick={onBackClick}
-                className="mr-2 text-gray-600"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M15 18l-6-6 6-6"></path>
-                </svg>
-              </button>
-            )}
-            <h2 className="text-lg font-semibold">{title}</h2>
-          </div>
-          
-          {/* Scrollable Screen Content */}
-          <div className="smartphone-screen">
-            {/* Progress Bar */}
-            {activeSteps >= 0 && (
-              <ProgressBar activeSteps={activeSteps} nextStep={activeSteps + 1} />
-            )}
-            
-            {/* Update Banner */}
-            {updateBanner && (
-              <UpdateBanner 
-                title={updateBanner.title} 
-                message={updateBanner.message} 
-                severe={updateBanner.severe} 
-                helpButton={updateBanner.helpButton}
-                onHelpClick={onHelpClick}
-              />
-            )}
-            
-            {/* Restaurant Info */}
-            <div className="px-4 py-4 bg-white border-b border-gray-100">
-              <div className="text-lg font-semibold mb-1">Tasty Burger</div>
-              <div className="text-sm text-gray-600">Order #DD-42398 • 2.4 miles away</div>
-            </div>
-            
-            {/* ETA Display */}
-            <ETADisplay time={eta} calculating={calculating} isPostOrder={isPostOrder} showETA={showETA} />
-            
-            {/* Star Rating (if enabled) */}
-            {showRating && (
-              <div className="px-4 pt-4">
-                <StarRating initialRating={0} />
+        </div>
+        
+        {/* Content Area */}
+        <div className="h-[600px] overflow-y-auto bg-gray-50">
+          {/* Update Banner */}
+          {updateBanner && (
+            <div className={cn(
+              "p-4 text-sm",
+              updateBanner.severe ? "bg-red-50" : "bg-blue-50"
+            )}>
+              <div className="font-semibold mb-1 flex items-center">
+                <Info size={16} className={cn(
+                  "mr-1",
+                  updateBanner.severe ? "text-red-600" : "text-blue-600"
+                )} />
+                <span className={cn(
+                  updateBanner.severe ? "text-red-600" : "text-blue-600"
+                )}>
+                  {updateBanner.title}
+                </span>
               </div>
-            )}
-            
-            {/* Track Button */}
-            {buttonText && (
-              <div 
-                className="bg-doordash-blue text-white text-center py-3 px-4 mx-4 my-4 rounded-lg font-medium cursor-pointer"
-                onClick={handleTrackClick}
-              >
-                {buttonText}
-              </div>
-            )}
-            
-            {/* Order Summary or Custom Content */}
-            <div className="p-4 bg-white min-h-[200px]">
-              {children || (
-                <>
-                  <div className="font-semibold text-base mb-3">Order Summary</div>
-                  <div className="flex justify-between py-2 border-b border-gray-100 text-sm">
-                    <div>1x Cheeseburger</div>
-                    <div>$8.99</div>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100 text-sm">
-                    <div>1x Fries (Large)</div>
-                    <div>$3.99</div>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100 text-sm">
-                    <div>1x Milkshake</div>
-                    <div>$4.99</div>
-                  </div>
-                </>
+              <div className="text-gray-700 mb-2">{updateBanner.message}</div>
+              {updateBanner.helpButton && (
+                <button 
+                  className="bg-white border border-gray-300 rounded-full px-4 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                  onClick={onHelpClick}
+                >
+                  Need Help?
+                </button>
               )}
             </div>
-          </div>
+          )}
           
-          {/* Phone Home Button */}
-          <div className="smartphone-home-button"></div>
-        </div>
-        
-        {/* Modal Overlay - fix overflow issue */}
-        {overlay && (
-          <div className="absolute inset-0 overflow-hidden rounded-[36px]">
-            {overlay}
-          </div>
-        )}
-        
-        {/* Map Fullscreen Overlay */}
-        {showMap && (
-          <div className="absolute inset-0 overflow-hidden rounded-[36px] z-10">
-            <div className="absolute inset-0 bg-white">
-              {/* Map Header */}
-              <div className="flex items-center gap-3 px-4 py-6 border-b border-gray-100">
-                <div 
-                  className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer"
-                  onClick={handleCloseMap}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 19l-7-7 7-7"></path>
+          {/* Order Progress */}
+          <div className="bg-white p-4 border-b border-gray-200">
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-base font-semibold">Order Progress</div>
+              <div className="text-sm text-gray-500">ETA: {eta}</div>
+            </div>
+            
+            {/* Progress Steps */}
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex flex-col items-center">
+                <div className={cn(
+                  "w-8 h-8 rounded-full flex items-center justify-center mb-1",
+                  activeSteps >= 1 ? "bg-green-500 text-white" : "bg-gray-200 text-gray-500"
+                )}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>
-                <h1 className="text-xl font-semibold text-gray-800">Live Tracking</h1>
+                <div className="text-xs text-center">Order<br/>Confirmed</div>
               </div>
-              
-              {/* Fullscreen Map */}
-              <div className="h-full">
-                <MapPlaceholder onClose={handleCloseMap} isModal={true} />
+              <div className={cn(
+                "flex-1 h-1 mx-1",
+                activeSteps >= 2 ? "bg-green-500" : "bg-gray-200"
+              )}></div>
+              <div className="flex flex-col items-center">
+                <div className={cn(
+                  "w-8 h-8 rounded-full flex items-center justify-center mb-1",
+                  activeSteps >= 2 ? "bg-green-500 text-white" : "bg-gray-200 text-gray-500"
+                )}>
+                  {activeSteps >= 2 ? (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  ) : (
+                    <span>2</span>
+                  )}
+                </div>
+                <div className="text-xs text-center">Preparing<br/>Order</div>
+              </div>
+              <div className={cn(
+                "flex-1 h-1 mx-1",
+                activeSteps >= 3 ? "bg-green-500" : "bg-gray-200"
+              )}></div>
+              <div className="flex flex-col items-center">
+                <div className={cn(
+                  "w-8 h-8 rounded-full flex items-center justify-center mb-1",
+                  activeSteps >= 3 ? "bg-green-500 text-white" : "bg-gray-200 text-gray-500"
+                )}>
+                  {activeSteps >= 3 ? (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  ) : (
+                    <span>3</span>
+                  )}
+                </div>
+                <div className="text-xs text-center">On the<br/>Way</div>
+              </div>
+              <div className={cn(
+                "flex-1 h-1 mx-1",
+                activeSteps >= 4 ? "bg-green-500" : "bg-gray-200"
+              )}></div>
+              <div className="flex flex-col items-center">
+                <div className={cn(
+                  "w-8 h-8 rounded-full flex items-center justify-center mb-1",
+                  activeSteps >= 4 ? "bg-green-500 text-white" : "bg-gray-200 text-gray-500"
+                )}>
+                  {activeSteps >= 4 ? (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  ) : (
+                    <span>4</span>
+                  )}
+                </div>
+                <div className="text-xs text-center">Delivered</div>
               </div>
             </div>
           </div>
-        )}
+          
+          {/* Delivery Details */}
+          <div className="bg-white p-4 border-b border-gray-200">
+            <div className="text-base font-semibold mb-3">Delivery Details</div>
+            <div className="flex items-start mb-3">
+              <MapPin size={18} className="text-gray-500 mr-2 mt-0.5" />
+              <div>
+                <div className="text-sm font-medium">123 Main Street, Apt 4B</div>
+                <div className="text-xs text-gray-500">San Francisco, CA 94103</div>
+              </div>
+            </div>
+            <div className="flex items-center">
+              <Clock size={18} className="text-gray-500 mr-2" />
+              <div className="text-sm">Estimated delivery: {eta}</div>
+            </div>
+          </div>
+          
+          {/* Your Dasher Section */}
+          <div className="bg-white p-4 border-b border-gray-200">
+            <div className="text-base font-semibold mb-3">Your Dasher</div>
+            <div className="flex items-center">
+              <div className="w-12 h-12 bg-gray-200 rounded-full mr-3 overflow-hidden">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dasher" className="w-full h-full object-cover" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center">
+                  <div className="text-sm font-medium mr-1">Michael R.</div>
+                  <div className="flex items-center">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#FFD700" stroke="#FFD700" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <span className="text-xs ml-0.5">4.9</span>
+                  </div>
+                </div>
+                <div className="text-xs text-gray-500 mb-2">Dasher for 2 years</div>
+                <div className="flex space-x-2">
+                  <button className="flex items-center justify-center bg-doordash-red text-white rounded-full w-[45%] py-1.5 text-xs font-medium">
+                    <PhoneIcon size={14} className="mr-1" />
+                    Call
+                  </button>
+                  <button className="flex items-center justify-center bg-gray-100 text-gray-700 rounded-full w-[45%] py-1.5 text-xs font-medium">
+                    <MessageSquare size={14} className="mr-1" />
+                    Text
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Render children or default content based on updateBanner */}
+          {children ? (
+            <div className="bg-white">{children}</div>
+          ) : (
+            <div className="bg-white p-4">
+              {updateBanner ? (
+                updateBanner.severe ? (
+                  updateBanner.helpButton ? (
+                    <HelpButtonContent />
+                  ) : (
+                    <SignificantDelayContent />
+                  )
+                ) : (
+                  <MinorDelayContent />
+                )
+              ) : (
+                <NormalStateContent />
+              )}
+            </div>
+          )}
+          
+          {/* Add some padding at the bottom */}
+          <div className="h-8"></div>
+        </div>
       </div>
+      
+      {/* Description */}
+      {description && (
+        <div className="mt-4 text-sm text-gray-600 bg-gray-100 p-3 rounded-lg">
+          {description}
+        </div>
+      )}
     </div>
   );
 };

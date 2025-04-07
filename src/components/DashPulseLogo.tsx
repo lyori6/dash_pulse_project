@@ -2,14 +2,15 @@ import { cn } from "@/lib/utils";
 
 interface DashPulseLogoProps {
   className?: string;
-  size?: 'default' | 'large' | 'header';
+  size?: 'default' | 'large' | 'header' | 'hero';
 }
 
 const DashPulseLogo = ({ className, size = 'default' }: DashPulseLogoProps) => {
   const sizeClasses = {
     default: "w-5 h-5", // 20% bigger than original w-4 h-4
     large: "w-6 h-6",   // Larger for general use
-    header: "w-12 h-12" // 200% bigger for header
+    header: "w-12 h-12", // 200% bigger for header
+    hero: "w-16 h-16"   // Extra large for hero sections
   };
   
   return (

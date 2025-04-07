@@ -7,22 +7,26 @@ import ParallelSection from "@/components/ParallelSection";
 
 const HomePage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [selectedPhone, setSelectedPhone] = useState('checkout');
-  const [activeSection, setActiveSection] = useState<'flow' | 'parallel'>('flow');
+  const [selectedPhone, setSelectedPhone] = useState('normal-state'); 
+  const [activeSection, setActiveSection] = useState<'flow' | 'parallel'>('flow'); // Initialize with 'flow' as the default active section
   const flowSectionRef = useRef<HTMLDivElement>(null);
   const parallelSectionRef = useRef<HTMLDivElement>(null);
   const tabsRef = useRef<HTMLDivElement>(null);
   const [tabIndicatorPosition, setTabIndicatorPosition] = useState({ left: 0, width: 0 });
   
   useEffect(() => {
-    // Trigger animations after component mounts
     setIsLoaded(true);
+    setActiveSection('flow');
+    setSelectedPhone('normal-state');
+    window.scrollTo(0, 0);
+    // Increase the timeout to ensure DOM is fully rendered before updating tab indicator
+    setTimeout(() => {
+      updateTabIndicator();
+    }, 300);
   }, []);
 
-  // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Arrow key navigation between phones
       if (e.key === 'ArrowRight') {
         navigatePhones('next');
         e.preventDefault();
@@ -40,10 +44,9 @@ const HomePage = () => {
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedPhone]);
+  }, [selectedPhone, activeSection]);
   
-  // Update tab indicator position
-  useEffect(() => {
+  const updateTabIndicator = () => {
     if (tabsRef.current) {
       const activeTab = tabsRef.current.querySelector(`.${activeSection}-tab`);
       if (activeTab) {
@@ -55,33 +58,45 @@ const HomePage = () => {
         });
       }
     }
+  };
+  
+  useEffect(() => {
+    // Add a small delay to ensure DOM is updated before calculating positions
+    const timer = setTimeout(() => {
+      updateTabIndicator();
+    }, 50);
+    return () => clearTimeout(timer);
   }, [activeSection]);
   
-  // Track scroll position to update active section
+  useEffect(() => {
+    const handleResize = () => {
+      updateTabIndicator();
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [activeSection]);
+  
   useEffect(() => {
     const handleScroll = () => {
       if (flowSectionRef.current && parallelSectionRef.current) {
         const flowRect = flowSectionRef.current.getBoundingClientRect();
         const parallelRect = parallelSectionRef.current.getBoundingClientRect();
-        const headerOffset = 150; // Increased offset to trigger the change earlier
+        const headerOffset = 150; 
         
-        // If flow section is visible in the viewport with additional offset
         if (flowRect.top < window.innerHeight - headerOffset && flowRect.bottom > headerOffset) {
           if (activeSection !== 'flow') {
             setActiveSection('flow');
-            // Optionally reset to first phone in flow section
             if (!flowSectionRef.current.contains(document.activeElement)) {
-              setSelectedPhone('checkout');
+              setSelectedPhone('normal-state');
             }
           }
         } 
-        // If parallel section is visible and flow section is not
         else if (parallelRect.top < window.innerHeight - headerOffset && parallelRect.bottom > headerOffset) {
           if (activeSection !== 'parallel') {
             setActiveSection('parallel');
-            // Optionally reset to first phone in parallel section
             if (!parallelSectionRef.current.contains(document.activeElement)) {
-              setSelectedPhone('discovery');
+              setSelectedPhone('initial');
             }
           }
         }
@@ -89,178 +104,53 @@ const HomePage = () => {
     };
     
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initial check
     handleScroll();
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, [activeSection]);
 
-  // Enhanced navigation between phones with specific screen navigation rules
   const navigatePhones = (direction: 'next' | 'prev' | 'up' | 'down') => {
-    // Define the matrix of phones for navigation
-    // First row - flow section
     const flowPhones = [
-      'checkout',           // Screen 1
-      'order-confirmed',    // Screen 2
-      'normal-state',       // Screen 3
-      'minor-delay',        // Screen 4
-      'significant-delay',  // Screen 5
-      'post-delivery'       // Screen 6
+      'normal-state',       
+      'minor-delay',        
+      'significant-delay',  
+      'help-button',        
     ];
     
-    // Second row - parallel section
     const parallelPhones = [
-      'discovery',          // A
-      'help-button',        // B
-      'update-log',         // C
-      'v2-concept',         // D
-      'notifications'       // E
+      'initial',            
+      'update-log',         
+      'post-delivery',      
+      'v2-concept',         
     ];
     
-    // Current position
-    const isInFlowSection = flowPhones.includes(selectedPhone);
-    const currentFlowIndex = flowPhones.indexOf(selectedPhone);
-    const currentParallelIndex = parallelPhones.indexOf(selectedPhone);
-    
-    let newPhone: string | null = null;
-    
-    // Implement the specific navigation rules for each screen
-    if (isInFlowSection) {
-      // Flow section (screens 1-6)
-      switch (currentFlowIndex) {
-        case 0: // Screen 1 (checkout)
-          if (direction === 'next') {
-            newPhone = flowPhones[1]; // Right to Screen 2
-          } else if (direction === 'down') {
-            newPhone = parallelPhones[0]; // Down to Screen A
-            scrollToSection(parallelSectionRef);
-            setActiveSection('parallel');
-          }
-          // Left and Up are disabled for Screen 1
-          break;
-          
-        case 1: // Screen 2 (order-confirmed)
-          if (direction === 'next') {
-            newPhone = flowPhones[2]; // Right to Screen 3
-          } else if (direction === 'prev') {
-            newPhone = flowPhones[0]; // Left to Screen 1
-          }
-          // Up is disabled for Screen 2
-          break;
-          
-        case 2: // Screen 3 (normal-state)
-          if (direction === 'next') {
-            newPhone = flowPhones[3]; // Right to Screen 4
-          } else if (direction === 'prev') {
-            newPhone = flowPhones[1]; // Left to Screen 2
-          } else if (direction === 'down') {
-            newPhone = parallelPhones[2]; // Down to Screen C
-            scrollToSection(parallelSectionRef);
-            setActiveSection('parallel');
-          }
-          // Up is disabled for Screen 3
-          break;
-          
-        case 3: // Screen 4 (minor-delay)
-          if (direction === 'next') {
-            newPhone = flowPhones[4]; // Right to Screen 5
-          } else if (direction === 'prev') {
-            newPhone = flowPhones[2]; // Left to Screen 3
-          } else if (direction === 'up') {
-            newPhone = flowPhones[0]; // Up to Screen 1
-          }
-          // Down is disabled for Screen 4
-          break;
-          
-        case 4: // Screen 5 (significant-delay)
-          if (direction === 'next') {
-            newPhone = flowPhones[5]; // Right to Screen 6
-          } else if (direction === 'prev') {
-            newPhone = flowPhones[3]; // Left to Screen 4
-          } else if (direction === 'up') {
-            newPhone = flowPhones[1]; // Up to Screen 2
-          }
-          // Down is disabled for Screen 5
-          break;
-          
-        case 5: // Screen 6 (post-delivery)
-          if (direction === 'prev') {
-            newPhone = flowPhones[4]; // Left to Screen 5
-          } else if (direction === 'up') {
-            newPhone = flowPhones[2]; // Up to Screen 3
-          }
-          // Right and Down are disabled for Screen 6
-          break;
-      }
-    } else {
-      // Parallel section (screens A-E)
-      switch (currentParallelIndex) {
-        case 0: // Screen A (discovery)
-          if (direction === 'next') {
-            newPhone = parallelPhones[1]; // Right to Screen B
-          } else if (direction === 'up') {
-            newPhone = flowPhones[0]; // Up to Screen 1
-            scrollToSection(flowSectionRef);
-            setActiveSection('flow');
-          }
-          break;
-          
-        case 1: // Screen B (help-button)
-          if (direction === 'next') {
-            newPhone = parallelPhones[2]; // Right to Screen C
-          } else if (direction === 'prev') {
-            newPhone = parallelPhones[0]; // Left to Screen A
-          } else if (direction === 'up') {
-            newPhone = flowPhones[1]; // Up to Screen 2
-            scrollToSection(flowSectionRef);
-            setActiveSection('flow');
-          }
-          break;
-          
-        case 2: // Screen C (update-log)
-          if (direction === 'next') {
-            newPhone = parallelPhones[3]; // Right to Screen D
-          } else if (direction === 'prev') {
-            newPhone = parallelPhones[1]; // Left to Screen B
-          } else if (direction === 'up') {
-            newPhone = flowPhones[2]; // Up to Screen 3
-            scrollToSection(flowSectionRef);
-            setActiveSection('flow');
-          }
-          break;
-          
-        case 3: // Screen D (v2-concept)
-          if (direction === 'next') {
-            newPhone = parallelPhones[4]; // Right to Screen E
-          } else if (direction === 'prev') {
-            newPhone = parallelPhones[2]; // Left to Screen C
-          } else if (direction === 'up') {
-            newPhone = flowPhones[3]; // Up to Screen 4
-            scrollToSection(flowSectionRef);
-            setActiveSection('flow');
-          }
-          break;
-          
-        case 4: // Screen E (notifications)
-          if (direction === 'prev') {
-            newPhone = parallelPhones[3]; // Left to Screen D
-          } else if (direction === 'up') {
-            newPhone = flowPhones[4]; // Up to Screen 5
-            scrollToSection(flowSectionRef);
-            setActiveSection('flow');
-          }
-          // Right is disabled for Screen E
-          break;
+    if (direction === 'up' || direction === 'down') {
+      if (direction === 'down' && activeSection === 'flow') {
+        scrollToSection(parallelSectionRef);
+        return;
+      } else if (direction === 'up' && activeSection === 'parallel') {
+        scrollToSection(flowSectionRef);
+        return;
       }
     }
     
-    // Only update if a valid navigation target was found
-    if (newPhone !== null) {
-      setSelectedPhone(newPhone);
+    const currentArray = activeSection === 'flow' ? flowPhones : parallelPhones;
+    const currentIndex = currentArray.indexOf(selectedPhone);
+    
+    if (currentIndex === -1) {
+      setSelectedPhone(currentArray[0]);
+      return;
+    }
+    
+    if (direction === 'next') {
+      const nextIndex = (currentIndex + 1) % currentArray.length;
+      setSelectedPhone(currentArray[nextIndex]);
+    } else if (direction === 'prev') {
+      const prevIndex = (currentIndex - 1 + currentArray.length) % currentArray.length;
+      setSelectedPhone(currentArray[prevIndex]);
     }
   };
-
-  // Helper function for smooth scrolling with animation
+  
   const scrollToSection = (sectionRef: React.RefObject<HTMLDivElement>) => {
     if (sectionRef.current) {
       sectionRef.current.scrollIntoView({ 
@@ -273,37 +163,48 @@ const HomePage = () => {
   const handleSectionChange = (section: 'flow' | 'parallel') => {
     setActiveSection(section);
     if (section === 'flow') {
-      setSelectedPhone('checkout');
       scrollToSection(flowSectionRef);
     } else {
-      setSelectedPhone('discovery');
       scrollToSection(parallelSectionRef);
     }
   };
+  
+  // Ensure the main flow is selected by default when the page loads
+  // but don't scroll to it automatically
+  useEffect(() => {
+    // Set a small timeout to ensure the DOM is fully loaded
+    const timer = setTimeout(() => {
+      setActiveSection('flow');
+      // No automatic scrolling here
+      
+      // Update tab indicator after state change
+      setTimeout(updateTabIndicator, 50);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-white py-12">
-      {/* Header */}
-      <div className="max-w-6xl mx-auto px-4 mb-16">
-        <Card className="overflow-hidden">
-          <CardContent className="p-6">
-            <div className="flex items-center mb-6">
-              <DashPulseLogo size="header" />
-              <h1 className="text-3xl font-bold ml-3">DashPulse</h1>
+    <div className="pb-20 bg-white">
+      {/* Hero Section */}
+      <div className="max-w-4xl mx-auto px-4 py-12 md:py-20">
+        <Card className="bg-white shadow-lg overflow-hidden">
+          <CardContent className="p-6 md:p-10">
+            <div className="flex flex-col md:flex-row items-center mb-8">
+              <div className="mb-6 md:mb-0 md:mr-8 transform transition-all duration-700 scale-90 md:scale-100" style={{ opacity: isLoaded ? 1 : 0 }}>
+                <DashPulseLogo size="hero" />
+              </div>
+              <div className={cn(
+                "transition-all duration-700 delay-300",
+                isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              )}>
+                <h1 className="text-3xl md:text-4xl font-bold mb-2" style={{ color: "#E24536" }}>DashPulse</h1>
+                <p className="text-gray-600">Real-time delivery updates and transparency</p>
+              </div>
             </div>
             
-            <h2 className="text-2xl font-semibold mb-4">Interactive Status Updates for Food Delivery</h2>
-            
             <p className="mb-4">
-              <span className="font-semibold">Problem:</span> Food delivery customers often experience anxiety when orders are delayed without explanation.
-            </p>
-            
-            <p className="mb-4">
-              <span className="font-semibold">Solution:</span> DashPulse provides real-time status updates and contextual information about delivery progress.
-            </p>
-            
-            <p className="mb-4">
-              <span className="font-semibold">Context:</span> This concept addresses user anxiety caused by delivery uncertainty through proactive transparency.
+              <span className="font-semibold">DashPulse</span> is a new feature designed to enhance the delivery tracking experience by providing customers with proactive updates and improved transparency throughout their order journey.
             </p>
             
             <p className="mb-4">
@@ -333,22 +234,25 @@ const HomePage = () => {
       
       {/* Section Tabs - Sticky */}
       <div className="sticky top-[60px] z-40 bg-white py-3 border-b mb-8 shadow-sm">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto px-4">
           <div className="flex justify-center relative" ref={tabsRef}>
-            {/* Tab indicator */}
-            <div 
-              className="absolute bottom-0 h-1 bg-doordash-red transition-all duration-300 ease-in-out rounded-full"
-              style={{ 
-                left: tabIndicatorPosition.left, 
-                width: tabIndicatorPosition.width,
-                transform: 'translateY(2px)'
-              }}
-            />
+            {/* Tab indicator - Only show when positions are calculated */}
+            {(tabIndicatorPosition.width > 0) && (
+              <div 
+                className="absolute bottom-0 h-1 rounded-full"
+                style={{ 
+                  left: tabIndicatorPosition.left, 
+                  width: tabIndicatorPosition.width,
+                  transform: 'translateY(2px)',
+                  backgroundColor: "#E24536"
+                }}
+              />
+            )}
             
             <button 
               className={cn(
-                "px-8 py-3 text-gray-800 text-lg font-medium mx-3 rounded-full transition-all duration-300 flow-tab",
-                activeSection === 'flow' ? "text-doordash-red" : ""
+                "px-4 sm:px-8 py-3 text-gray-800 text-base sm:text-lg font-medium mx-2 sm:mx-3 rounded-full transition-all duration-300 flow-tab",
+                activeSection === 'flow' ? "text-[#E24536]" : ""
               )}
               onClick={() => handleSectionChange('flow')}
             >
@@ -356,8 +260,8 @@ const HomePage = () => {
             </button>
             <button
               className={cn(
-                "px-8 py-3 text-gray-800 text-lg font-medium mx-3 rounded-full transition-all duration-300 parallel-tab",
-                activeSection === 'parallel' ? "text-doordash-red" : ""
+                "px-4 sm:px-8 py-3 text-gray-800 text-base sm:text-lg font-medium mx-2 sm:mx-3 rounded-full transition-all duration-300 parallel-tab",
+                activeSection === 'parallel' ? "text-[#E24536]" : ""
               )}
               onClick={() => handleSectionChange('parallel')}
             >
@@ -367,26 +271,29 @@ const HomePage = () => {
         </div>
       </div>
       
-      {/* Flow Section */}
-      <div ref={flowSectionRef} className="max-w-6xl mx-auto px-4 scroll-mt-32">
-        <FlowSection 
-          selectedPhone={selectedPhone}
-          onSelectPhone={(phone) => {
-            setSelectedPhone(phone);
-            setActiveSection('flow');
-          }}
-        />
-      </div>
-      
-      {/* Parallel Section */}
-      <div ref={parallelSectionRef} className="max-w-6xl mx-auto px-4 scroll-mt-32">
-        <ParallelSection
-          selectedPhone={selectedPhone}
-          onSelectPhone={(phone) => {
-            setSelectedPhone(phone);
-            setActiveSection('parallel');
-          }}
-        />
+      {/* Content Container */}
+      <div className="bg-white max-w-6xl mx-auto px-4 py-6 rounded-lg shadow-md">
+        {/* Main Flow Section */}
+        <div ref={flowSectionRef} className="scroll-mt-32">
+          <FlowSection 
+            selectedPhone={selectedPhone}
+            onSelectPhone={(phone) => {
+              setSelectedPhone(phone);
+              setActiveSection('flow');
+            }}
+          />
+        </div>
+        
+        {/* Parallel Section */}
+        <div ref={parallelSectionRef} className="scroll-mt-32 mt-16">
+          <ParallelSection
+            selectedPhone={selectedPhone}
+            onSelectPhone={(phone) => {
+              setSelectedPhone(phone);
+              setActiveSection('parallel');
+            }}
+          />
+        </div>
       </div>
     </div>
   );
