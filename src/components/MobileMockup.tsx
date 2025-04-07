@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import MapPlaceholder from '@/components/MapPlaceholder';
 
+// Simplified progress styles with minimal animations
 const progressStyles = `
   .progress-dot {
     position: relative;
@@ -14,30 +14,12 @@ const progressStyles = `
     align-items: center;
     justify-content: center;
     z-index: 10;
-    transition: all 0.3s ease;
     box-shadow: 0 0 0 4px rgba(226, 232, 240, 0.3);
   }
   
   .progress-dot.active {
     background-color: #E24536;
     box-shadow: 0 0 0 4px rgba(226, 69, 54, 0.2);
-  }
-  
-  .progress-dot.next {
-    background-color: #e2e8f0;
-    animation: pulse 2s infinite ease-in-out;
-  }
-  
-  @keyframes pulse {
-    0% {
-      box-shadow: 0 0 0 0 rgba(226, 69, 54, 0.4);
-    }
-    70% {
-      box-shadow: 0 0 0 8px rgba(226, 69, 54, 0);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(226, 69, 54, 0);
-    }
   }
   
   .progress-line {
@@ -48,29 +30,10 @@ const progressStyles = `
     left: 0;
     right: 0;
     z-index: 5;
-    transition: all 0.5s ease;
   }
   
   .progress-line.active {
     background-color: #E24536;
-  }
-  
-  .progress-line.next {
-    background: linear-gradient(90deg, #E24536 0%, #e2e8f0 100%);
-    background-size: 200% 100%;
-    animation: gradientMove 2s infinite ease-in-out;
-  }
-  
-  @keyframes gradientMove {
-    0% {
-      background-position: 100% 0;
-    }
-    50% {
-      background-position: 0 0;
-    }
-    100% {
-      background-position: 100% 0;
-    }
   }
   
   .dashpulse-indicator {
@@ -89,22 +52,6 @@ const progressStyles = `
     height: 8px;
     background-color: #0066FF;
     border-radius: 50%;
-    animation: dashpulse 2s infinite ease-in-out;
-  }
-  
-  @keyframes dashpulse {
-    0% {
-      opacity: 0.4;
-      transform: scale(0.8);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.1);
-    }
-    100% {
-      opacity: 0.4;
-      transform: scale(0.8);
-    }
   }
   
   .smartphone-mockup {
@@ -119,7 +66,6 @@ const progressStyles = `
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
     border: 1px solid #f1f1f1;
     position: relative;
-    transition: all 0.3s ease;
   }
   
   .smartphone-notch {
@@ -149,7 +95,8 @@ const progressStyles = `
   
   .smartphone-screen {
     height: 680px;
-    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
   .smartphone-home-button {
@@ -198,17 +145,11 @@ const ProgressDot: React.FC<ProgressDotProps> = ({ active, label, isNext = false
         active && "active",
         isNext && "next"
       )}>
-        {isNext && (
-          <span className="absolute inset-0 bg-doordash-red/10 rounded-full animate-ping opacity-75"></span>
+        {active && (
+          <div className="w-2 h-2 bg-white rounded-full"></div>
         )}
       </div>
-      <span className={cn(
-        "text-xs whitespace-nowrap mt-2 transition-colors duration-300",
-        active ? "text-gray-800 font-medium" : "text-gray-500",
-        isNext && "text-doordash-red font-medium"
-      )}>
-        {label}
-      </span>
+      <div className="text-xs mt-1 text-gray-600">{label}</div>
     </div>
   );
 };
@@ -219,29 +160,31 @@ interface ProgressBarProps {
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ activeSteps, nextStep = -1 }) => {
-  const steps = ["Ordered", "Preparing", "On the way", "Delivered"];
-  
   return (
-    <div className="py-8 px-6 bg-white border-b border-gray-100 relative z-10">
+    <div className="px-4 py-6 relative">
       <style dangerouslySetInnerHTML={{ __html: progressStyles }} />
-      <div className="relative flex items-center justify-between">
-        {steps.map((step, index) => (
-          <React.Fragment key={step}>
-            {index > 0 && (
-              <div className={cn(
-                "progress-line", 
-                index <= activeSteps && "active",
-                index === nextStep && "next"
-              )} />
-            )}
-            <ProgressDot 
-              active={index <= activeSteps} 
-              label={step}
-              isNext={nextStep === index} 
-            />
-          </React.Fragment>
-        ))}
+      
+      {/* Progress Lines */}
+      <div className="flex justify-between relative">
+        <div className={cn("progress-line", activeSteps >= 1 && "active")} style={{ left: '16px', right: '50%' }}></div>
+        <div className={cn("progress-line", activeSteps >= 2 && "active")} style={{ left: '50%', right: '16px' }}></div>
       </div>
+      
+      {/* Progress Dots */}
+      <div className="flex justify-between">
+        <ProgressDot active={activeSteps >= 0} label="Ordered" />
+        <ProgressDot active={activeSteps >= 1} label="Preparing" isNext={nextStep === 1} />
+        <ProgressDot active={activeSteps >= 2} label="Delivering" isNext={nextStep === 2} />
+        <ProgressDot active={activeSteps >= 3} label="Delivered" isNext={nextStep === 3} />
+      </div>
+      
+      {/* DashPulse Indicator */}
+      {activeSteps >= 0 && (
+        <div className="dashpulse-indicator">
+          <div className="dashpulse-pulse"></div>
+          <span>DashPulse Active</span>
+        </div>
+      )}
     </div>
   );
 };
@@ -262,24 +205,18 @@ const UpdateBanner: React.FC<UpdateBannerProps> = ({
   onHelpClick
 }) => {
   return (
-    <div className={cn(
-      "update-banner",
-      severe && "severe"
-    )}>
-      <div className="flex justify-between items-start">
-        <div>
-          <div className="font-semibold text-sm mb-1">{title}</div>
-          <div className="text-xs">{message}</div>
-        </div>
-        {helpButton && (
-          <button 
-            onClick={onHelpClick}
-            className="ml-2 px-3 py-1 bg-white border border-doordash-red text-doordash-red text-xs rounded-lg font-medium hover:bg-red-50 transition-colors"
-          >
-            Help
-          </button>
-        )}
-      </div>
+    <div className={cn("update-banner", severe && "severe")}>
+      <div className="font-medium mb-1">{title}</div>
+      <div className="text-sm">{message}</div>
+      
+      {helpButton && (
+        <button 
+          className="help-button"
+          onClick={onHelpClick}
+        >
+          Get Help
+        </button>
+      )}
     </div>
   );
 };
@@ -295,19 +232,17 @@ const ETADisplay: React.FC<ETADisplayProps> = ({ time, calculating = false, isPo
   if (!showETA) return null;
   
   return (
-    <div className="px-4 py-4 bg-[#f6f8fe] border-b border-gray-100 text-center">
-      <div className="text-sm text-gray-600 mb-1">Estimated Delivery</div>
-      <div className={cn(
-        "font-semibold text-doordash-blue", 
-        calculating ? "text-lg" : "text-xl"
-      )}>
-        {time}
-      </div>
-      {isPostOrder && (
-        <div className="dashpulse-indicator">
-          <div className="dashpulse-pulse"></div>
-          <span className="text-[#0066FF] font-medium">DashPulse Active</span>
-        </div>
+    <div className="px-4 py-4 bg-white border-b border-gray-100">
+      {isPostOrder ? (
+        <>
+          <div className="text-sm text-gray-600">Estimated Delivery</div>
+          <div className="text-xl font-semibold">{calculating ? 'Calculating...' : time}</div>
+        </>
+      ) : (
+        <>
+          <div className="text-sm text-gray-600">Estimated Time</div>
+          <div className="text-xl font-semibold">{time}</div>
+        </>
       )}
     </div>
   );
@@ -319,74 +254,62 @@ interface StarRatingProps {
 
 const StarRating: React.FC<StarRatingProps> = ({ initialRating = 0 }) => {
   const [rating, setRating] = useState(initialRating);
-  const [hoverRating, setHoverRating] = useState(0);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
+  const [hover, setHover] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+  
   const handleRatingClick = (selectedRating: number) => {
     setRating(selectedRating);
   };
-
+  
   const handleSubmit = () => {
-    if (rating > 0) {
-      setIsSubmitted(true);
-    }
+    setSubmitted(true);
   };
-
+  
   return (
-    <div className="bg-white p-4 rounded-lg border border-gray-100 mb-4">
-      {!isSubmitted ? (
+    <div className="bg-white p-4 rounded-lg">
+      {submitted ? (
+        <div className="text-center py-4">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-2xl text-green-600 mx-auto mb-4">
+            ✓
+          </div>
+          <div className="text-lg font-semibold mb-1">Thanks for your feedback!</div>
+          <div className="text-sm text-gray-600">Your rating helps us improve.</div>
+        </div>
+      ) : (
         <>
-          <h3 className="font-medium text-base mb-3">How was your delivery experience?</h3>
-          <div className="flex items-center gap-2 mb-4">
+          <div className="text-lg font-semibold mb-4 text-center">How was your delivery?</div>
+          
+          <div className="flex justify-center gap-2 mb-6">
             {[1, 2, 3, 4, 5].map((star) => (
               <button
                 key={star}
-                className="focus:outline-none transition-transform"
-                onMouseEnter={() => setHoverRating(star)}
-                onMouseLeave={() => setHoverRating(0)}
+                className="focus:outline-none"
+                onMouseEnter={() => setHover(star)}
+                onMouseLeave={() => setHover(0)}
                 onClick={() => handleRatingClick(star)}
               >
                 <svg 
-                  width="32" 
-                  height="32" 
+                  width="40" 
+                  height="40" 
                   viewBox="0 0 24 24" 
-                  fill={star <= (hoverRating || rating) ? "#FFD700" : "none"} 
-                  stroke={star <= (hoverRating || rating) ? "#FFD700" : "#D1D5DB"}
+                  fill={star <= (hover || rating) ? "#FFD700" : "none"} 
+                  stroke={star <= (hover || rating) ? "#FFD700" : "#D1D5DB"}
                   strokeWidth="2"
-                  className={cn(
-                    "transition-all duration-150",
-                    star <= (hoverRating || rating) ? "scale-110" : "scale-100"
-                  )}
                 >
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                 </svg>
               </button>
             ))}
           </div>
+          
           <button 
-            className={cn(
-              "w-full py-2 rounded-md font-medium transition-colors",
-              rating > 0 
-                ? "bg-doordash-blue text-white hover:bg-blue-700" 
-                : "bg-gray-100 text-gray-400 cursor-not-allowed"
-            )}
+            className="w-full bg-doordash-blue text-white text-center py-3 rounded-lg font-medium"
             onClick={handleSubmit}
             disabled={rating === 0}
           >
-            Submit Feedback
+            Submit Rating
           </button>
         </>
-      ) : (
-        <div className="text-center py-2">
-          <div className="text-green-500 mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-              <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-          </div>
-          <h3 className="font-medium text-base mb-1">Thanks for your feedback!</h3>
-          <p className="text-sm text-gray-500">Your rating helps us improve our service.</p>
-        </div>
       )}
     </div>
   );
@@ -453,42 +376,37 @@ const MobileMockup: React.FC<MobileMockupProps> = ({
         </div>
       )}
       
-      <div className="smartphone-mockup transition-all duration-300 fade-in mx-auto">
+      <div className="smartphone-mockup mx-auto">
         {/* Phone Frame without white border */}
         <div className="smartphone-frame">
           <div className="smartphone-notch"></div>
           
           {/* Status Bar */}
           <div className="status-bar">
-            <div className="font-bold">{time}</div>
-            <div className="flex gap-2">
+            <div>{time}</div>
+            <div className="flex items-center gap-1">
               <span>📶</span>
               <span>🔋</span>
             </div>
           </div>
           
           {/* Header */}
-          <div className="px-4 py-4 bg-white border-b border-gray-100 flex items-center">
+          <div className="flex items-center px-4 py-3 border-b border-gray-100 bg-white">
             {showBackButton && (
               <button 
-                className="mr-3 cursor-pointer"
                 onClick={onBackClick}
+                className="mr-2 text-gray-600"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M15 18l-6-6 6-6" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 18l-6-6 6-6"></path>
                 </svg>
               </button>
             )}
-            <h1 className="text-lg font-semibold">{title}</h1>
+            <h2 className="text-lg font-semibold">{title}</h2>
           </div>
           
-          {/* Scrollable Content */}
-          <ScrollArea className="smartphone-screen">
-            {/* Map Placeholder */}
-            <div className="h-[180px] relative">
-              <MapPlaceholder />
-            </div>
-            
+          {/* Scrollable Screen Content */}
+          <div className="smartphone-screen">
             {/* Progress Bar */}
             {activeSteps >= 0 && (
               <ProgressBar activeSteps={activeSteps} nextStep={activeSteps + 1} />
@@ -524,7 +442,7 @@ const MobileMockup: React.FC<MobileMockupProps> = ({
             {/* Track Button */}
             {buttonText && (
               <div 
-                className="bg-doordash-blue text-white text-center py-3 px-4 mx-4 my-4 rounded-lg font-medium cursor-pointer hover:bg-blue-700 transition-colors"
+                className="bg-doordash-blue text-white text-center py-3 px-4 mx-4 my-4 rounded-lg font-medium cursor-pointer"
                 onClick={handleTrackClick}
               >
                 {buttonText}
@@ -551,7 +469,7 @@ const MobileMockup: React.FC<MobileMockupProps> = ({
                 </>
               )}
             </div>
-          </ScrollArea>
+          </div>
           
           {/* Phone Home Button */}
           <div className="smartphone-home-button"></div>
