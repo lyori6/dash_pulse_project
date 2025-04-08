@@ -156,7 +156,7 @@ const Layout = () => {
       </main>
       <footer className="bg-white shadow-sm-top mt-8">
         <div className="container mx-auto p-4 text-center text-sm text-gray-500">
-          DashPulse — <a href="https://www.lyori.com" target="_blank" rel="noopener noreferrer">Lyor's</a> SimpleClosure Interview Demo
+          DashPulse — <a href="https://www.lyori.com" target="_blank" rel="noopener noreferrer">Lyor's</a> Demo
         </div>
       </footer>
     </div>
