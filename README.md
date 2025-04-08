@@ -28,8 +28,8 @@ The prototype showcases the following key UI states and concepts:
 
 ## Live Prototype & Full Case Study
 
-*   **Interactive Prototype:** [**View the Live DashPulse Prototype **]([YOUR_LOVABLE_PROTOTYPE_URL_HERE](https://dash-pulse-project.vercel.app/))
-*   **Full Presentation Deck:** [**View the Full Case Study Presentation **]([https://drive.google.com/file/d/1KXt74v6gczr0mm9GKj1XBwOvKsM-d8IB/view](https://drive.google.com/file/d/1jIuVQ2mi-Z3u-S4d40syBs_8wcbhOZ1R/view?usp=drive_link))
+*   **Interactive Prototype:** [**View the Live DashPulse Prototype**](https://dash-pulse-project.vercel.app/)
+*   **Full Presentation Deck:** [**View the Full Case Study Presentation**](https://drive.google.com/file/d/1jIuVQ2mi-Z3u-S4d40syBs_8wcbhOZ1R/view?usp=drive_link)
 
 ## Technology
 
