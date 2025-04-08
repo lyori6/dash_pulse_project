@@ -35,7 +35,7 @@ const FullDeck = () => {
               className="bg-[#0066FF] hover:bg-blue-700 text-white px-8 py-6 h-auto font-medium text-base"
             >
               <a 
-                href="https://drive.google.com/file/d/1KXt74v6gczr0mm9GKj1XBwOvKsM-d8IB/view" 
+                href="https://drive.google.com/file/d/1jIuVQ2mi-Z3u-S4d40syBs_8wcbhOZ1R/view" 
                 target="_blank"
                 rel="noopener noreferrer" 
                 className="inline-flex items-center gap-2"
