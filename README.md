@@ -1,73 +1,43 @@
-# Welcome to your Lovable project
+# DashPulse - DoorDash Post-Order UX Prototype
 
-## Project info
+> An interactive prototype showcasing a concept to improve DoorDash's post-order experience through proactive transparency.
 
-**URL**: https://lovable.dev/projects/f20cfa69-c1b7-4a69-90d7-f67f212b5e81
+## Overview
 
-## How can I edit this code?
+This project is an interactive website prototype built using **Lovable AI**. It demonstrates **DashPulse V1**, a proposed feature enhancement for the DoorDash mobile app, focusing specifically on the post-order tracking experience.
 
-There are several ways of editing your application.
+## Context
 
-**Use Lovable**
+This prototype was developed as part of a Product Management interview process (for SimpleClosure) using a hypothetical DoorDash case study. The core challenge was to address significant user anxiety and frustration stemming from **delivery time uncertainty and lack of proactive communication** during the post-order wait – identified as the #1 pain point in research based on public data.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f20cfa69-c1b7-4a69-90d7-f67f212b5e81) and start prompting.
+DashPulse V1 aims to mitigate this by providing:
+*   More realistic **Dynamic ETA ranges**.
+*   **Proactive, contextual updates** directly within the tracking screen when delays occur.
 
-Changes made via Lovable will be committed automatically to this repo.
+**Note:** This is purely a conceptual prototype for demonstration purposes and is not affiliated with DoorDash.
 
-**Use your preferred IDE**
+## Features Demonstrated
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+The prototype showcases the following key UI states and concepts:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+*   **Normal Order Tracking:** Displays ETA as a range and passive "DashPulse Active" status.
+*   **Minor Delay Scenario:** Shows a non-intrusive banner with contextual information (e.g., "Restaurant Busy") and updated ETA range.
+*   **Significant Delay Scenario:** Shows a distinct banner for more severe delays with updated ETA range.
+*   **A/B Test Concept:** Illustrates a variation with a contextual "Need Help?" button appearing during significant delays.
+*   **(Optional - Link to Appendix Section)** Additional states like initial confirmation, update log view, post-delivery summary, and a V2 concept.
 
-Follow these steps:
+## Live Prototype & Full Case Study
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+*   **Interactive Prototype:** [**View the Live DashPulse Prototype (Built with Lovable)**](YOUR_LOVABLE_PROTOTYPE_URL_HERE)
+*   **Full Presentation Deck:** [**View the Full Case Study Presentation (Google Slides)**](https://drive.google.com/file/d/1KXt74v6gczr0mm9GKj1XBwOvKsM-d8IB/view)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Technology
 
-# Step 3: Install the necessary dependencies.
-npm i
+*   **Prototyping Platform:** [Lovable AI](https://lovable.ai/)
+*   **Design Concepts:** Inspired by DoorDash UI, created using high-level mockups/wireframes (see Presentation Deck).
+*   **Logo:** Custom concept logo (`mylogo.svg` / PNG provided).
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## Status
 
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/f20cfa69-c1b7-4a69-90d7-f67f212b5e81) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+*   **Conceptual Prototype:** This project demonstrates a proposed user experience flow. It is not a fully functional application or official DoorDash feature.
+*   **Illustrative Data:** Any data shown (ETAs, costs, ROI in linked presentation) is illustrative and based on assumptions derived from research for the case study.
