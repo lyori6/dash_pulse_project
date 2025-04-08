@@ -31,11 +31,6 @@ The prototype showcases the following key UI states and concepts:
 *   **Interactive Prototype:** [**View the DashPulse Site**](https://dash-pulse-project.vercel.app/)
 *   **Full Presentation Deck:** [**View the Full Case Study Presentation**](https://drive.google.com/file/d/1jIuVQ2mi-Z3u-S4d40syBs_8wcbhOZ1R/view?usp=drive_link)
 
-## Technology
-
-*   **Prototyping Platform:** [Lovable AI](https://lovable.ai/)
-*   **Design Concepts:** Inspired by DoorDash UI, created using high-level mockups/wireframes (see Presentation Deck).
-*   **Logo:** Custom concept logo (`mylogo.svg` / PNG provided).
 
 ## Status
 
